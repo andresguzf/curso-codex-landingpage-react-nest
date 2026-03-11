@@ -1,0 +1,145 @@
+[
+  {
+    "id": "spring-boot-apis",
+    "title": "Spring Boot desde cero a APIs escalables",
+    "category": "Spring Boot",
+    "duration": "16 horas",
+    "rating": 4.9,
+    "price": 69,
+    "visual": "spring",
+    "latest": true,
+    "tags": ["java", "spring", "backend", "api"]
+  },
+  {
+    "id": "kafka-eventos",
+    "title": "Apache Kafka para microservicios orientados a eventos",
+    "category": "Apache Kafka",
+    "duration": "18 horas",
+    "rating": 4.8,
+    "price": 79,
+    "visual": "kafka",
+    "latest": true,
+    "tags": ["kafka", "microservicios", "eventos", "backend"]
+  },
+  {
+    "id": "python-backend-automation",
+    "title": "Python aplicado a automatizacion y backend moderno",
+    "category": "Python",
+    "duration": "15 horas",
+    "rating": 4.7,
+    "price": 59,
+    "visual": "python",
+    "latest": false,
+    "tags": ["python", "automatizacion", "backend"]
+  },
+  {
+    "id": "react-ui-pro",
+    "title": "React profesional con componentes y arquitectura UI",
+    "category": "React",
+    "duration": "13 horas",
+    "rating": 5,
+    "price": 64,
+    "visual": "react",
+    "latest": true,
+    "tags": ["react", "frontend", "ui"]
+  },
+  {
+    "id": "angular-enterprise",
+    "title": "Angular moderno para interfaces empresariales",
+    "category": "Angular",
+    "duration": "14 horas",
+    "rating": 4.8,
+    "price": 62,
+    "visual": "angular",
+    "latest": false,
+    "tags": ["angular", "frontend", "enterprise"]
+  },
+  {
+    "id": "spring-cloud-microservices",
+    "title": "Microservicios con Spring Cloud y arquitectura limpia",
+    "category": "Spring Cloud",
+    "duration": "20 horas",
+    "rating": 4.9,
+    "price": 89,
+    "visual": "microservices",
+    "latest": false,
+    "tags": ["spring cloud", "microservicios", "arquitectura"]
+  },
+  {
+    "id": "docker-devops",
+    "title": "Docker para despliegues reproducibles y desarrollo local",
+    "category": "Docker",
+    "duration": "11 horas",
+    "rating": 4.7,
+    "price": 54,
+    "visual": "docker",
+    "latest": false,
+    "tags": ["docker", "devops", "contenedores"]
+  },
+  {
+    "id": "kubernetes-production",
+    "title": "Kubernetes para orquestacion de contenedores en produccion",
+    "category": "Kubernetes",
+    "duration": "17 horas",
+    "rating": 4.8,
+    "price": 84,
+    "visual": "kubernetes",
+    "latest": false,
+    "tags": ["kubernetes", "devops", "orquestacion"]
+  },
+  {
+    "id": "postgresql-pro",
+    "title": "PostgreSQL profesional para aplicaciones transaccionales",
+    "category": "PostgreSQL",
+    "duration": "12 horas",
+    "rating": 4.8,
+    "price": 58,
+    "visual": "postgres",
+    "latest": false,
+    "tags": ["postgresql", "sql", "database"]
+  },
+  {
+    "id": "java-fundamentals",
+    "title": "Fundamentos de Java para backend orientado a objetos",
+    "category": "Java",
+    "duration": "10 horas",
+    "rating": 4.9,
+    "price": 49,
+    "visual": "java",
+    "latest": false,
+    "tags": ["java", "poo", "backend"]
+  },
+  {
+    "id": "testing-junit-mockito",
+    "title": "Testing con JUnit y Mockito para proyectos Java",
+    "category": "Testing Java",
+    "duration": "9 horas",
+    "rating": 4.9,
+    "price": 46,
+    "visual": "testing",
+    "latest": false,
+    "tags": ["junit", "mockito", "testing", "java"]
+  },
+  {
+    "id": "aws-java-python",
+    "title": "AWS para despliegue de aplicaciones Java y Python",
+    "category": "AWS",
+    "duration": "14 horas",
+    "rating": 4.7,
+    "price": 74,
+    "visual": "aws",
+    "latest": false,
+    "tags": ["aws", "cloud", "java", "python"]
+  },
+  {
+    "id": "nodejs-modern-apis",
+    "title": "Node.js y APIs modernas para servicios web rapidos",
+    "category": "Node.js",
+    "duration": "11 horas",
+    "rating": 4.6,
+    "price": 52,
+    "visual": "node",
+    "latest": false,
+    "tags": ["nodejs", "api", "backend", "javascript"]
+  }
+]
