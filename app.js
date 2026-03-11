@@ -3,6 +3,32 @@ const catalogGrid = document.querySelector("#catalog-grid");
 const catalogEmpty = document.querySelector("#catalog-empty");
 const searchInput = document.querySelector("#course-search");
 const embeddedCourses = document.querySelector("#courses-data");
+const filterChipsRoot = document.querySelector("#filter-chips");
+const resultsCopy = document.querySelector("#results-copy");
+const heroCourseTotal = document.querySelector("#hero-course-total");
+const techSummary = document.querySelector("#tech-summary");
+
+const state = {
+  courses: [],
+  query: "",
+  activeTag: "all"
+};
+
+const courseDescriptions = {
+  "Spring Boot": "APIs robustas, estructura limpia y una base lista para crecer con buenas practicas.",
+  "Apache Kafka": "Mensajeria orientada a eventos para sistemas desacoplados y de alto trafico.",
+  Python: "Automatizacion y backend con foco en productividad, claridad y mantenimiento.",
+  React: "Interfaces modulares con mejor estructura visual, componentes reutilizables y criterio UX.",
+  Angular: "Arquitectura frontend para proyectos empresariales con equipos y flujos mas formales.",
+  "Spring Cloud": "Microservicios, resiliencia, discovery y contratos entre servicios con enfoque real.",
+  Docker: "Entornos repetibles para desarrollar, probar y desplegar sin friccion innecesaria.",
+  Kubernetes: "Orquestacion de contenedores con conceptos que sirven en equipos y plataformas reales.",
+  PostgreSQL: "Modelo relacional, consultas solidas y diseno de datos para aplicaciones exigentes.",
+  Java: "Fundamentos bien explicados para escribir backend orientado a objetos con criterio.",
+  "Testing Java": "JUnit y Mockito para elevar calidad, confianza y velocidad de iteracion.",
+  AWS: "Servicios cloud para desplegar y operar aplicaciones Java y Python con base practica.",
+  "Node.js": "Servicios web rapidos, APIs modernas y una base clara para backend con JavaScript."
+};
 
 const escapeHtml = (value) =>
   String(value)
@@ -257,15 +283,16 @@ const visualMap = {
 
 const formatPrice = (price) => `USD ${price}`;
 const formatRating = (rating) => rating.toFixed(1);
+const getDescription = (course) => courseDescriptions[course.category] || "Contenido orientado a proyectos, criterio tecnico y fundamentos que si escalan.";
+const getPrimaryTag = (course) => (course.tags && course.tags[0] ? course.tags[0] : course.category).toUpperCase();
 
 const createCourseCard = (course, variant = "catalog") => {
   const isLatest = variant === "latest";
   const wrapperClass = isLatest ? "course-card" : "market-card";
   const visualClass = isLatest ? "course-visual" : "market-visual";
   const bodyClass = isLatest ? "course-body" : "market-body";
-  const titleTag = isLatest ? "h2" : "h3";
-  const metaClass = isLatest ? "course-meta" : "market-meta";
-  const priceMarkup = isLatest ? "" : `<div class="market-price">${formatPrice(course.price)}</div>`;
+  const footerClass = isLatest ? "course-footer" : "market-footer";
+  const descriptionClass = isLatest ? "course-description" : "market-description";
 
   return `
     <article class="${wrapperClass}">
@@ -273,19 +300,23 @@ const createCourseCard = (course, variant = "catalog") => {
         ${visualMap[course.visual](course.id)}
       </div>
       <div class="${bodyClass}">
-        <span class="course-tag">${escapeHtml(course.category)}</span>
-        <${titleTag}>${escapeHtml(course.title)}</${titleTag}>
-        <div class="${metaClass}">
-          <span class="meta-item">
+        <span class="course-tag">${escapeHtml(getPrimaryTag(course))}</span>
+        <h3>${escapeHtml(course.title)}</h3>
+        <p class="${descriptionClass}">${escapeHtml(getDescription(course))}</p>
+        <div class="${isLatest ? "course-meta" : "market-meta"}">
+          <span class="meta-stack">
             ${clockIcon}
             ${escapeHtml(course.duration)}
           </span>
-          <span class="meta-item rating">
-            <span class="rating-number">${formatRating(course.rating)}</span>
+          <span class="meta-rating">
+            <span>${formatRating(course.rating)}</span>
             <span class="stars" style="--score: ${course.rating};" aria-label="${formatRating(course.rating)} de 5 estrellas"></span>
           </span>
         </div>
-        ${priceMarkup}
+        <div class="${footerClass}">
+          <div class="market-price">${formatPrice(course.price)}</div>
+          <a class="course-link" href="#contacto">Ver detalles</a>
+        </div>
       </div>
     </article>
   `;
@@ -298,11 +329,7 @@ const renderLatestCourses = (courses) => {
   }
 
   const radios = latest
-    .map(
-      (course, index) => `
-        <input ${index === 0 ? "checked" : ""} type="radio" name="course-slider" id="course-${index + 1}">
-      `
-    )
+    .map((course, index) => `<input ${index === 0 ? "checked" : ""} type="radio" name="course-slider" id="course-${index + 1}">`)
     .join("");
 
   const cards = latest.map((course) => createCourseCard(course, "latest")).join("");
@@ -321,9 +348,7 @@ const renderLatestCourses = (courses) => {
     .join("");
 
   const dots = latest
-    .map(
-      (_, index) => `<label for="course-${index + 1}" class="dot" aria-label="Ver curso ${index + 1}"></label>`
-    )
+    .map((_, index) => `<label for="course-${index + 1}" class="dot" aria-label="Ver curso ${index + 1}"></label>`)
     .join("");
 
   latestCoursesRoot.innerHTML = `
@@ -351,38 +376,92 @@ const renderCatalog = (courses) => {
   catalogEmpty.hidden = courses.length > 0;
 };
 
-const setupSearch = (courses) => {
-  if (!searchInput) {
-    renderCatalog(courses);
+const getUniqueTags = (courses) => {
+  const tags = new Set();
+  courses.forEach((course) => {
+    (course.tags || []).forEach((tag) => tags.add(tag));
+  });
+  return ["all", ...Array.from(tags).sort((a, b) => a.localeCompare(b, "es"))];
+};
+
+const renderFilterChips = (courses) => {
+  if (!filterChipsRoot) {
     return;
   }
 
-  const applyFilter = () => {
-    const query = searchInput.value.trim().toLowerCase();
+  const tags = getUniqueTags(courses);
+  filterChipsRoot.innerHTML = tags
+    .map((tag) => {
+      const label = tag === "all" ? "Todos" : tag;
+      const activeClass = state.activeTag === tag ? "active" : "";
+      return `<button class="filter-chip ${activeClass}" type="button" data-tag="${escapeHtml(tag)}">${escapeHtml(label)}</button>`;
+    })
+    .join("");
 
-    if (!query) {
-      renderCatalog(courses);
-      return;
-    }
-
-    const filtered = courses.filter((course) => {
-      const haystack = [
-        course.title,
-        course.category,
-        course.duration,
-        ...(course.tags || [])
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return haystack.includes(query);
+  filterChipsRoot.querySelectorAll("[data-tag]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.activeTag = button.dataset.tag || "all";
+      applyFilters();
     });
+  });
+};
 
-    renderCatalog(filtered);
-  };
+const updateMetaContent = (courses) => {
+  if (heroCourseTotal) {
+    heroCourseTotal.textContent = String(courses.length);
+  }
 
-  searchInput.addEventListener("input", applyFilter);
-  renderCatalog(courses);
+  if (techSummary) {
+    const labels = getUniqueTags(courses)
+      .filter((tag) => tag !== "all")
+      .slice(0, 7)
+      .map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1));
+    techSummary.textContent = labels.join(", ") + ".";
+  }
+};
+
+const updateResultsCopy = (filteredCourses) => {
+  if (!resultsCopy) {
+    return;
+  }
+
+  if (!state.query && state.activeTag === "all") {
+    resultsCopy.textContent = `Mostrando los ${filteredCourses.length} cursos disponibles.`;
+    return;
+  }
+
+  const queryText = state.query ? ` para "${state.query}"` : "";
+  const tagText = state.activeTag !== "all" ? ` en ${state.activeTag}` : "";
+  resultsCopy.textContent = `${filteredCourses.length} resultado(s)${queryText}${tagText}.`;
+};
+
+const applyFilters = () => {
+  const filtered = state.courses.filter((course) => {
+    const query = state.query.trim().toLowerCase();
+    const matchesQuery = !query
+      || [course.title, course.category, course.duration, ...(course.tags || [])]
+        .join(" ")
+        .toLowerCase()
+        .includes(query);
+
+    const matchesTag = state.activeTag === "all" || (course.tags || []).includes(state.activeTag);
+    return matchesQuery && matchesTag;
+  });
+
+  renderFilterChips(state.courses);
+  renderCatalog(filtered);
+  updateResultsCopy(filtered);
+};
+
+const setupSearch = () => {
+  if (!searchInput) {
+    return;
+  }
+
+  searchInput.addEventListener("input", () => {
+    state.query = searchInput.value;
+    applyFilters();
+  });
 };
 
 const init = async () => {
@@ -403,13 +482,19 @@ const init = async () => {
       }
     }
 
+    state.courses = courses;
     renderLatestCourses(courses);
-    setupSearch(courses);
+    updateMetaContent(courses);
+    setupSearch();
+    applyFilters();
   } catch (error) {
     console.error("No se pudo cargar el catalogo de cursos", error);
     if (catalogEmpty) {
       catalogEmpty.hidden = false;
       catalogEmpty.textContent = "No fue posible cargar el catalogo de cursos.";
+    }
+    if (resultsCopy) {
+      resultsCopy.textContent = "No fue posible cargar el catalogo.";
     }
   }
 };

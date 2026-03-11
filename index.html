@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cursos Tech Online</title>
+  <title>Andres Guzman | Academia de Software</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <input type="checkbox" id="theme-toggle" class="theme-toggle-input" aria-label="Cambiar tema">
+
   <div class="page-shell">
     <header class="site-header">
       <nav class="navbar" aria-label="Principal">
@@ -20,86 +21,145 @@
             <svg viewBox="0 0 40 40">
               <defs>
                 <linearGradient id="brandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#c598ff"></stop>
-                  <stop offset="100%" stop-color="#6c3cff"></stop>
+                  <stop offset="0%" stop-color="#f5c46b"></stop>
+                  <stop offset="100%" stop-color="#ff7a59"></stop>
                 </linearGradient>
               </defs>
               <rect x="3" y="3" width="34" height="34" rx="12" fill="url(#brandGlow)"></rect>
-              <path d="M14 25V15h3.2l4.8 5.8V15H26v10h-3.2L18 19.2V25z" fill="#f7f1ff"></path>
+              <path d="M13 26V14h3.2l4.8 6.2V14H26v12h-3.1l-5-6.4V26z" fill="#1a1612"></path>
             </svg>
           </span>
           <span class="brand-copy">
             <strong>Andres Guzman</strong>
-            <span>CodeCinema</span>
+            <span>CodeCinema Academy</span>
           </span>
         </a>
+
         <ul class="nav-links">
           <li><a href="#inicio">Inicio</a></li>
-          <li><a href="#sobre-mi">Sobre mi</a></li>
+          <li><a href="#sobre-mi">Instructor</a></li>
+          <li><a href="#propuesta">Metodologia</a></li>
           <li><a href="#cursos">Cursos</a></li>
-          <li><a href="#cursos">Tecnologias</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
-        <label class="theme-switch" for="theme-toggle" aria-label="Cambiar entre tema oscuro y claro">
-          <span class="theme-switch-track">
-            <span class="theme-switch-icon moon" aria-hidden="true">☾</span>
-            <span class="theme-switch-thumb"></span>
-            <span class="theme-switch-icon sun" aria-hidden="true">☼</span>
-          </span>
-        </label>
+
+        <div class="nav-actions">
+          <a class="nav-cta" href="#cursos">Ver catalogo</a>
+          <label class="theme-switch" for="theme-toggle" aria-label="Cambiar entre tema oscuro y claro">
+            <span class="theme-switch-track">
+              <span class="theme-switch-icon moon" aria-hidden="true">☾</span>
+              <span class="theme-switch-thumb"></span>
+              <span class="theme-switch-icon sun" aria-hidden="true">☼</span>
+            </span>
+          </label>
+        </div>
       </nav>
     </header>
 
     <main class="site-main">
       <section class="hero-panel" id="inicio">
-        <div class="hero-grid">
-          <article class="instructor-column" id="sobre-mi">
-            <h1>Aprende con enfoque real.</h1>
-            <p>Andres Guzman es instructor de desarrollo backend y arquitectura de software. Su enfoque combina fundamentos solidos, buenas practicas y experiencia aplicada en Java, Spring Boot, microservicios, mensajeria con Kafka y frontend moderno.</p>
-            <div class="status-box">
-              <p>Contenido orientado a desarrolladores que buscan avanzar con criterio tecnico, orden y experiencia cercana a escenarios reales de trabajo.</p>
+        <div class="hero-copy" id="sobre-mi">
+          <span class="eyebrow">Arquitectura, backend y criterio tecnico</span>
+          <h1>Software real, bien explicado.</h1>
+          <p class="hero-lead">Programas pensados para desarrolladores que quieren dominar Java, Spring, microservicios, Kafka, cloud y frontend moderno con una mirada de produccion y equipo real.</p>
+
+          <div class="hero-actions">
+            <a class="primary-button" href="#cursos">Explorar cursos</a>
+            <a class="secondary-button" href="#propuesta">Ver metodologia</a>
+          </div>
+
+          <div class="hero-proof">
+            <div class="proof-card">
+              <span>Ruta guiada</span>
+              <strong>Desde fundamentos hasta despliegue</strong>
             </div>
-            <div class="instructor-stats" aria-label="Estadisticas del instructor">
-              <div class="stat-item">
+            <div class="proof-card">
+              <span>Enfoque</span>
+              <strong>Ejemplos reales, decisiones tecnicas y codigo limpio</strong>
+            </div>
+          </div>
+
+          <div class="spotlight-card">
+            <div class="spotlight-top">
+              <span class="eyebrow">Instructor</span>
+              <p>Backend, arquitectura y sistemas distribuidos</p>
+            </div>
+
+            <div class="spotlight-metrics" aria-label="Estadisticas del instructor">
+              <div class="metric-block">
                 <strong>18k+</strong>
                 <span>Estudiantes</span>
               </div>
-              <div class="stat-item">
-                <strong>24</strong>
+              <div class="metric-block">
+                <strong id="hero-course-total">24</strong>
                 <span>Cursos</span>
               </div>
-              <div class="stat-item">
-                <strong>3.2k</strong>
-                <span>Reseñas</span>
-              </div>
-              <div class="stat-item">
-                <strong class="rating-value">4.9</strong>
-                <span class="stars" style="--score: 4.9;" aria-label="4.9 de 5 estrellas"></span>
-                <span>Calificación</span>
+              <div class="metric-block">
+                <strong>4.9</strong>
+                <span>Rating promedio</span>
               </div>
             </div>
-          </article>
 
-          <aside class="courses-column" aria-label="Ultimos cursos publicados">
-            <div class="courses-header">
-              <span class="eyebrow">Ultimos cursos</span>
+            <p class="spotlight-quote">“Explicaciones directas, buena arquitectura y contenido que conecta con lo que se usa en equipos de software.”</p>
+          </div>
+        </div>
+
+        <aside class="hero-stage" aria-label="Cursos recientes">
+          <div class="latest-panel">
+            <div class="latest-panel-header">
+              <div>
+                <span class="eyebrow">Lanzamientos</span>
+                <h2>Ultimos cursos</h2>
+              </div>
+              <p>Seleccion curada para quienes quieren avanzar rapido en stacks de alto impacto.</p>
             </div>
             <div id="latest-courses"></div>
-          </aside>
+          </div>
+        </aside>
+      </section>
+
+      <section class="trust-panel" id="propuesta" aria-label="Propuesta de valor">
+        <article class="manifesto-card">
+          <span class="eyebrow">Metodologia</span>
+          <h2>Menos relleno, mas contexto tecnico.</h2>
+          <p>Cada curso prioriza decisiones de arquitectura, fundamentos que escalan, debugging y patrones de trabajo que reducen deuda desde el primer proyecto.</p>
+        </article>
+
+        <div class="trust-grid">
+          <article class="trust-item">
+            <strong>Aprendizaje por sistemas</strong>
+            <p>Entiendes como se conectan APIs, bases de datos, mensajeria, testing y despliegue.</p>
+          </article>
+          <article class="trust-item">
+            <strong>Curva profesional</strong>
+            <p>Contenido util para pasar de practicar a diseñar soluciones con criterio tecnico.</p>
+          </article>
+          <article class="trust-item">
+            <strong>Tecnologias vigentes</strong>
+            <p id="tech-summary">Java, Spring, Kafka, Docker, Kubernetes, React y mas.</p>
+          </article>
         </div>
       </section>
 
-      <section class="info-panel" id="cursos">
+      <section class="catalog-panel" id="cursos">
         <div class="catalog-header">
           <div class="section-copy">
             <span class="eyebrow">Catalogo de cursos</span>
-            <h2>Explora programas con enfoque profesional y salida real al mercado.</h2>
-            <p>Una seleccion de cursos online en backend, arquitectura, integracion y frontend moderno, presentados en formato claro, directo y orientado a compra.</p>
+            <h2 class="catalog-title">Encuentra tu siguiente stack.</h2>
+            <p>Una vitrina pensada para comprar mejor: busqueda clara, filtros por tecnologia y tarjetas con informacion mas facil de escanear.</p>
           </div>
-          <label class="catalog-search" for="course-search">
-            <span class="search-icon" aria-hidden="true">⌕</span>
-            <input type="search" id="course-search" placeholder="Buscar curso, stack o tecnologia">
-          </label>
+
+          <div class="catalog-tools">
+            <label class="catalog-search" for="course-search">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input type="search" id="course-search" placeholder="Buscar por curso, stack o tecnologia">
+            </label>
+            <p class="results-copy" id="results-copy">Mostrando todos los cursos disponibles.</p>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div class="filter-scroller" id="filter-chips" aria-label="Filtros rapidos por tecnologia"></div>
         </div>
 
         <div class="catalog-grid" id="catalog-grid" aria-label="Catalogo de cursos"></div>
@@ -125,9 +185,11 @@
 
     <footer class="site-footer" id="contacto">
       <div class="footer-copy">
-        <p>CodeCinema Studio © 2026. Cursos online de desarrollo y arquitectura de software.</p>
+        <span class="eyebrow">Contacto</span>
+        <p>CodeCinema Academy © 2026. Cursos online de desarrollo, arquitectura y sistemas distribuidos.</p>
         <a class="footer-email" href="mailto:contacto@andresguzman.dev">contacto@andresguzman.dev</a>
       </div>
+
       <div class="social-links" aria-label="Redes sociales">
         <a href="#" aria-label="X">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -144,7 +206,7 @@
         <a href="#" aria-label="YouTube">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20.2 8.2c-.2-1-1-1.8-2-2C16.4 5.8 12 5.8 12 5.8s-4.4 0-6.2.4c-1 .2-1.8 1-2 2C3.4 10 3.4 12 3.4 12s0 2 .4 3.8c.2 1 1 1.8 2 2 1.8.4 6.2.4 6.2.4s4.4 0 6.2-.4c1-.2 1.8-1 2-2 .4-1.8.4-3.8.4-3.8s0-2-.4-3.8z"></path>
-            <path d="M10.2 9.3l5 2.7-5 2.7z" fill="#140818" stroke="none"></path>
+            <path d="M10.2 9.3l5 2.7-5 2.7z" fill="currentColor" stroke="none"></path>
           </svg>
         </a>
         <a href="#" aria-label="Discord">
