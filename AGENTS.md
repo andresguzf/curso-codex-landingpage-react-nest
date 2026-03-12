@@ -57,3 +57,12 @@ Pull requests should include:
 - screenshots or a screen recording for UI edits
 - manual verification notes
 - any content or data updates called out explicitly
+
+## Skills
+
+### Available skills
+- `react-rules`: genera o modifica aplicaciones React con TypeScript, Zustand, Zod y React Hook Form. Usar cuando se necesite crear una app o componente React, agregar o modificar hooks, estado global, formularios o logica de UI React. Skill path: `.agents/skills/react-rules/SKILL.md`
+
+### Skill trigger rules
+- Activar `react-rules` cuando el usuario pida crear una aplicacion o componente React.
+- Activar `react-rules` cuando el usuario pida agregar o modificar componentes, hooks, estado, formularios o logica de UI en React.
