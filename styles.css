@@ -53,12 +53,6 @@ body::before {
   pointer-events: none;
 }
 
-.theme-toggle-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
 .page-shell {
   width: min(1240px, calc(100% - 32px));
   margin: 0 auto;
@@ -223,6 +217,9 @@ body::before {
 }
 
 .theme-switch {
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
 }
 
@@ -258,7 +255,7 @@ body::before {
   line-height: 1;
 }
 
-#theme-toggle:checked ~ .page-shell .theme-switch-thumb {
+.app-shell.theme-light .theme-switch-thumb {
   transform: translateX(34px);
 }
 
@@ -497,15 +494,9 @@ h2 {
   font-size: clamp(1.6rem, 2.6vw, 2.4rem);
 }
 
-#latest-courses {
+.latest-courses {
   position: relative;
   min-width: 0;
-}
-
-#latest-courses input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .carousel-viewport {
@@ -688,6 +679,7 @@ h2 {
   background: rgba(0, 0, 0, 0.34);
   border: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 1.5rem;
+  font-family: inherit;
 }
 
 .dots {
@@ -709,29 +701,14 @@ h2 {
   height: 10px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.22);
+  border: 0;
 }
 
-#course-1:checked ~ .carousel-viewport .carousel-track {
-  transform: translateX(0);
-}
-
-#course-2:checked ~ .carousel-viewport .carousel-track {
-  transform: translateX(-100%);
-}
-
-#course-3:checked ~ .carousel-viewport .carousel-track {
-  transform: translateX(-200%);
-}
-
-#course-1:checked ~ .carousel-controls .arrows-1,
-#course-2:checked ~ .carousel-controls .arrows-2,
-#course-3:checked ~ .carousel-controls .arrows-3 {
+.arrows.is-visible {
   display: flex;
 }
 
-#course-1:checked ~ .carousel-controls .dots label:nth-child(1),
-#course-2:checked ~ .carousel-controls .dots label:nth-child(2),
-#course-3:checked ~ .carousel-controls .dots label:nth-child(3) {
+.dot.active {
   background: var(--accent);
 }
 
@@ -960,7 +937,7 @@ h2 {
   stroke-width: 1.8;
 }
 
-#theme-toggle:checked ~ .page-shell {
+.app-shell.theme-light .page-shell {
   --bg: #efe5d5;
   --bg-soft: #f4ecdf;
   --paper: #fffaf0;
@@ -974,56 +951,56 @@ h2 {
   --shadow: 0 26px 70px rgba(123, 96, 63, 0.12);
 }
 
-#theme-toggle:checked ~ .page-shell .site-header,
-#theme-toggle:checked ~ .page-shell .hero-panel,
-#theme-toggle:checked ~ .page-shell .trust-panel,
-#theme-toggle:checked ~ .page-shell .catalog-panel,
-#theme-toggle:checked ~ .page-shell .site-footer,
-#theme-toggle:checked ~ .page-shell .proof-card,
-#theme-toggle:checked ~ .page-shell .spotlight-card,
-#theme-toggle:checked ~ .page-shell .latest-panel,
-#theme-toggle:checked ~ .page-shell .manifesto-card,
-#theme-toggle:checked ~ .page-shell .trust-item,
-#theme-toggle:checked ~ .page-shell .market-card,
-#theme-toggle:checked ~ .page-shell .course-card,
-#theme-toggle:checked ~ .page-shell .filter-chip,
-#theme-toggle:checked ~ .page-shell .catalog-search,
-#theme-toggle:checked ~ .page-shell .social-links a {
+.app-shell.theme-light .page-shell .site-header,
+.app-shell.theme-light .page-shell .hero-panel,
+.app-shell.theme-light .page-shell .trust-panel,
+.app-shell.theme-light .page-shell .catalog-panel,
+.app-shell.theme-light .page-shell .site-footer,
+.app-shell.theme-light .page-shell .proof-card,
+.app-shell.theme-light .page-shell .spotlight-card,
+.app-shell.theme-light .page-shell .latest-panel,
+.app-shell.theme-light .page-shell .manifesto-card,
+.app-shell.theme-light .page-shell .trust-item,
+.app-shell.theme-light .page-shell .market-card,
+.app-shell.theme-light .page-shell .course-card,
+.app-shell.theme-light .page-shell .filter-chip,
+.app-shell.theme-light .page-shell .catalog-search,
+.app-shell.theme-light .page-shell .social-links a {
   background: rgba(255, 251, 244, 0.84);
 }
 
-#theme-toggle:checked ~ .page-shell .metric-block,
-#theme-toggle:checked ~ .page-shell .arrow,
-#theme-toggle:checked ~ .page-shell .dots {
+.app-shell.theme-light .page-shell .metric-block,
+.app-shell.theme-light .page-shell .arrow,
+.app-shell.theme-light .page-shell .dots {
   background: rgba(34, 28, 23, 0.06);
 }
 
-#theme-toggle:checked ~ .page-shell .secondary-button,
-#theme-toggle:checked ~ .page-shell .course-link {
+.app-shell.theme-light .page-shell .secondary-button,
+.app-shell.theme-light .page-shell .course-link {
   background: rgba(34, 28, 23, 0.03);
 }
 
-#theme-toggle:checked ~ .page-shell .spotlight-card {
+.app-shell.theme-light .page-shell .spotlight-card {
   background:
     linear-gradient(135deg, rgba(136, 91, 255, 0.16), rgba(255, 255, 255, 0.65)),
     rgba(255, 255, 255, 0.84);
 }
 
-#theme-toggle:checked ~ .page-shell h1,
-#theme-toggle:checked ~ .page-shell h2,
-#theme-toggle:checked ~ .page-shell h3,
-#theme-toggle:checked ~ .page-shell .proof-card strong,
-#theme-toggle:checked ~ .page-shell .metric-block strong,
-#theme-toggle:checked ~ .page-shell .market-price {
+.app-shell.theme-light .page-shell h1,
+.app-shell.theme-light .page-shell h2,
+.app-shell.theme-light .page-shell h3,
+.app-shell.theme-light .page-shell .proof-card strong,
+.app-shell.theme-light .page-shell .metric-block strong,
+.app-shell.theme-light .page-shell .market-price {
   color: #5f4f7e;
 }
 
-#theme-toggle:checked ~ .page-shell .course-card h3,
-#theme-toggle:checked ~ .page-shell .market-card h3,
-#theme-toggle:checked ~ .page-shell .latest-panel-header h2,
-#theme-toggle:checked ~ .page-shell .section-copy h2,
-#theme-toggle:checked ~ .page-shell .manifesto-card h2,
-#theme-toggle:checked ~ .page-shell .trust-item strong {
+.app-shell.theme-light .page-shell .course-card h3,
+.app-shell.theme-light .page-shell .market-card h3,
+.app-shell.theme-light .page-shell .latest-panel-header h2,
+.app-shell.theme-light .page-shell .section-copy h2,
+.app-shell.theme-light .page-shell .manifesto-card h2,
+.app-shell.theme-light .page-shell .trust-item strong {
   color: #6a5a89;
 }
 
