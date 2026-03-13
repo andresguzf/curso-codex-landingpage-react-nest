@@ -1,25 +1,20 @@
 {
-  "name": "3-cursos-landingpage-ui",
+  "name": "cursos-monorepo",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "zustand": "^5.0.8",
-    "zod": "^4.1.5"
+    "dev": "concurrently \"npm run dev -w @cursos/web\" \"npm run start:dev -w @cursos/api\"",
+    "dev:web": "npm run dev -w @cursos/web",
+    "dev:api": "npm run start:dev -w @cursos/api",
+    "build": "npm run build -w @cursos/api && npm run build -w @cursos/web",
+    "prisma:generate": "npm run prisma:generate -w @cursos/api",
+    "prisma:db:push": "npm run prisma:db:push -w @cursos/api",
+    "prisma:seed": "npm run prisma:seed -w @cursos/api"
   },
   "devDependencies": {
-    "@types/node": "^24.3.3",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react-swc": "^4.0.1",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.5"
+    "concurrently": "^9.2.1"
   }
 }

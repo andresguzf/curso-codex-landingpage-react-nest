@@ -1,0 +1,4 @@
+interface:
+  display_name: "NestJS Best Practices"
+  short_description: "Genera APIs NestJS con Prisma y Zod"
+  default_prompt: "Usa $nestjs-best-practices para crear o actualizar una API NestJS con módulos, Prisma y validación con Zod."
