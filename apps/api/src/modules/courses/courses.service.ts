@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Course } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import type { CoursesQueryDto, CreateCourseDto, CourseDto } from './courses.schemas';
+import type { CoursesQueryDto, CreateCourseDto, CourseDto, UpdateCourseDto } from './courses.schemas';
 
 @Injectable()
 export class CoursesService {
@@ -12,7 +12,7 @@ export class CoursesService {
     const normalizedTag = filters.tag?.trim().toLowerCase();
     const courses = await this.prisma.course.findMany({
       where: {
-        ...(normalizedQuery ? { searchText: { contains: normalizedQuery } } : {}),
+        ...(normalizedQuery ? { title: { contains: normalizedQuery } } : {}),
         ...(normalizedTag ? { tagsJson: { contains: `"${normalizedTag}"` } } : {}),
       },
       orderBy: [
@@ -71,36 +71,82 @@ export class CoursesService {
         slug: input.slug,
         title: input.title,
         category: input.category,
-        duration: input.duration,
+        description: input.description,
+        hours: input.hours,
         rating: input.rating,
         price: input.price,
-        visual: input.visual,
         best_sellers: input.best_sellers,
         tagsJson: JSON.stringify(input.tags),
-        searchText: buildSearchText(input),
       },
       create: {
         slug: input.slug,
         title: input.title,
         category: input.category,
-        duration: input.duration,
+        description: input.description,
+        hours: input.hours,
         rating: input.rating,
         price: input.price,
-        visual: input.visual,
         best_sellers: input.best_sellers,
         tagsJson: JSON.stringify(input.tags),
-        searchText: buildSearchText(input),
       },
     });
 
     return mapCourseRecord(course);
   }
-}
 
-function buildSearchText(course: CreateCourseDto): string {
-  return [course.title, course.category, course.duration, course.visual, ...course.tags]
-    .join(' ')
-    .toLowerCase();
+  async update(id: number, input: UpdateCourseDto): Promise<CourseDto> {
+    const existingCourse = await this.prisma.course.findUnique({
+      where: { id },
+    });
+
+    if (!existingCourse) {
+      throw new NotFoundException(`Course ${id} not found`);
+    }
+
+    const nextCourse = {
+      slug: input.slug ?? existingCourse.slug,
+      title: input.title ?? existingCourse.title,
+      category: input.category ?? existingCourse.category,
+      description: input.description ?? existingCourse.description,
+      hours: input.hours ?? existingCourse.hours,
+      rating: input.rating ?? existingCourse.rating,
+      price: input.price ?? existingCourse.price,
+      best_sellers: input.best_sellers ?? existingCourse.best_sellers,
+      tags: input.tags ?? (JSON.parse(existingCourse.tagsJson) as string[]),
+    };
+
+    const course = await this.prisma.course.update({
+      where: { id },
+      data: {
+        slug: nextCourse.slug,
+        title: nextCourse.title,
+        category: nextCourse.category,
+        description: nextCourse.description,
+        hours: nextCourse.hours,
+        rating: nextCourse.rating,
+        price: nextCourse.price,
+        best_sellers: nextCourse.best_sellers,
+        tagsJson: JSON.stringify(nextCourse.tags),
+      },
+    });
+
+    return mapCourseRecord(course);
+  }
+
+  async remove(id: number): Promise<void> {
+    const existingCourse = await this.prisma.course.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!existingCourse) {
+      throw new NotFoundException(`Course ${id} not found`);
+    }
+
+    await this.prisma.course.delete({
+      where: { id },
+    });
+  }
 }
 
 function mapCourseRecord(course: Course): CourseDto {
@@ -109,11 +155,13 @@ function mapCourseRecord(course: Course): CourseDto {
     slug: course.slug,
     title: course.title,
     category: course.category,
-    duration: course.duration,
+    description: course.description,
+    hours: course.hours,
     rating: course.rating,
     price: course.price,
-    visual: course.visual,
     best_sellers: course.best_sellers,
     tags: JSON.parse(course.tagsJson) as string[],
+    created_at: course.created_at.toISOString(),
+    updated_at: course.updated_at.toISOString(),
   };
 }

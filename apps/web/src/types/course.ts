@@ -3,10 +3,12 @@ export type Course = {
   slug: string;
   title: string;
   category: string;
-  duration: string;
+  description: string;
+  hours: number;
   rating: number;
   price: number;
-  visual: string;
   best_sellers: boolean;
   tags: string[];
+  created_at: string;
+  updated_at: string;
 };

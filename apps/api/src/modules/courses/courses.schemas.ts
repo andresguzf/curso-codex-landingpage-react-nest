@@ -1,19 +1,30 @@
 import { z } from 'zod';
 
-export const courseSchema = z.object({
-  id: z.number().int().positive(),
+const courseCreateFieldsSchema = z.object({
   slug: z.string().min(1),
-  title: z.string().min(1),
+  title: z.string().min(10).max(120),
   category: z.string().min(1),
-  duration: z.string().min(1),
+  description: z.string().min(1),
+  hours: z.number().min(2).max(45),
   rating: z.number().min(0).max(5),
-  price: z.number().int().nonnegative(),
-  visual: z.string().min(1),
-  best_sellers: z.boolean(),
-  tags: z.array(z.string().min(1)).min(1),
+  price: z.number().nonnegative().min(7).max(100),
+  best_sellers: z.boolean().default(false),
+  tags: z.array(z.string().min(1)).default([]),
 });
 
-export const createCourseSchema = courseSchema;
+export const courseSchema = courseCreateFieldsSchema.extend({
+  id: z.number().int().positive(),
+  created_at: z.iso.datetime(),
+  updated_at: z.iso.datetime(),
+});
+
+export const createCourseSchema = courseCreateFieldsSchema;
+export const updateCourseSchema = courseCreateFieldsSchema.partial().refine(
+  (value) => Object.keys(value).length > 0,
+  {
+    message: 'At least one field is required',
+  },
+);
 export const courseParamsSchema = z.object({
   id: z.coerce.number().int().positive(),
 });
@@ -27,6 +38,7 @@ export const latestCoursesQuerySchema = z.object({
 
 export type CourseDto = z.infer<typeof courseSchema>;
 export type CreateCourseDto = z.infer<typeof createCourseSchema>;
+export type UpdateCourseDto = z.infer<typeof updateCourseSchema>;
 export type CourseParamsDto = z.infer<typeof courseParamsSchema>;
 export type CoursesQueryDto = z.infer<typeof coursesQuerySchema>;
 export type LatestCoursesQueryDto = z.infer<typeof latestCoursesQuerySchema>;

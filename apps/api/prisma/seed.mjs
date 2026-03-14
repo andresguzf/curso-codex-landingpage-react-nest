@@ -1,10 +1,25 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const prisma = new PrismaClient();
+const ADMIN_EMAIL = 'admin@example.com';
+const ADMIN_PASSWORD = 'Admin12345';
 
 async function main() {
+  const adminPasswordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
+  await prisma.user.upsert({
+    where: { email: ADMIN_EMAIL },
+    update: {
+      passwordHash: adminPasswordHash,
+    },
+    create: {
+      email: ADMIN_EMAIL,
+      passwordHash: adminPasswordHash,
+    },
+  });
+
   const coursesPath = resolve(process.cwd(), '../../courses.json');
   const raw = await readFile(coursesPath, 'utf-8');
   const courses = JSON.parse(raw);
@@ -16,25 +31,23 @@ async function main() {
         slug: course.slug,
         title: course.title,
         category: course.category,
-        duration: course.duration,
+        description: course.description,
+        hours: course.hours,
         rating: course.rating,
         price: course.price,
-        visual: course.visual,
-        best_sellers: course.best_sellers,
-        tagsJson: JSON.stringify(course.tags),
-        searchText: [course.title, course.category, course.duration, course.visual, ...course.tags].join(' ').toLowerCase(),
+        best_sellers: course.best_sellers ?? false,
+        tagsJson: JSON.stringify(course.tags ?? []),
       },
       create: {
         slug: course.slug,
         title: course.title,
         category: course.category,
-        duration: course.duration,
+        description: course.description,
+        hours: course.hours,
         rating: course.rating,
         price: course.price,
-        visual: course.visual,
-        best_sellers: course.best_sellers,
-        tagsJson: JSON.stringify(course.tags),
-        searchText: [course.title, course.category, course.duration, course.visual, ...course.tags].join(' ').toLowerCase(),
+        best_sellers: course.best_sellers ?? false,
+        tagsJson: JSON.stringify(course.tags ?? []),
       },
     });
   }

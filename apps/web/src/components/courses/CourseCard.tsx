@@ -1,5 +1,5 @@
 import { clockIcon } from '../../content/site-content';
-import { formatPrice, formatRating, getDescription, getPrimaryTag } from '../../lib/course-utils';
+import { formatHours, formatPrice, formatRating, getPrimaryTag } from '../../lib/course-utils';
 import type { Course } from '../../types/course';
 import { CourseVisual } from './CourseVisual';
 
@@ -14,7 +14,6 @@ export function CourseCard({ course, variant }: CourseCardProps) {
   const visualClass = isLatest ? 'course-visual' : 'market-visual';
   const bodyClass = isLatest ? 'course-body' : 'market-body';
   const footerClass = isLatest ? 'course-footer' : 'market-footer';
-  const descriptionClass = isLatest ? 'course-description' : 'market-description';
 
   return (
     <article className={wrapperClass}>
@@ -27,11 +26,10 @@ export function CourseCard({ course, variant }: CourseCardProps) {
           {course.best_sellers ? <span className="course-bestseller-badge">Best seller</span> : null}
         </div>
         <h3>{course.title}</h3>
-        <p className={descriptionClass}>{getDescription(course)}</p>
         <div className={isLatest ? 'course-meta' : 'market-meta'}>
           <span className="meta-stack">
             {clockIcon}
-            {course.duration}
+            {formatHours(course.hours)}
           </span>
           <span className="meta-rating">
             <span>{formatRating(course.rating)}</span>

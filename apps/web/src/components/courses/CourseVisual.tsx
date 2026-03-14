@@ -27,7 +27,7 @@ type CourseVisualBaseProps = {
 };
 
 export function CourseVisual({ course }: { course: Course }) {
-  switch (course.visual) {
+  switch (getVisualShapeFromSlug(course.slug)) {
     case 'spring':
       return <CourseVisualBase id={course.slug} accentA="#83d56f" accentB="#2d9b47" titleWidth={90} bodyWidths={[76, 96]} shape="spring" />;
     case 'kafka':
@@ -57,6 +57,50 @@ export function CourseVisual({ course }: { course: Course }) {
     default:
       return <CourseVisualBase id={course.slug} accentA="#85e7ff" accentB="#2b6d8f" titleWidth={76} bodyWidths={[88, 68]} shape="react" />;
   }
+}
+
+function getVisualShapeFromSlug(slug: string): VisualShape {
+  if (slug.includes('spring-boot')) {
+    return 'spring';
+  }
+  if (slug.includes('kafka')) {
+    return 'kafka';
+  }
+  if (slug.includes('python')) {
+    return 'python';
+  }
+  if (slug.includes('react')) {
+    return 'react';
+  }
+  if (slug.includes('angular')) {
+    return 'angular';
+  }
+  if (slug.includes('microservices') || slug.includes('spring-cloud')) {
+    return 'microservices';
+  }
+  if (slug.includes('docker')) {
+    return 'docker';
+  }
+  if (slug.includes('kubernetes')) {
+    return 'kubernetes';
+  }
+  if (slug.includes('postgres')) {
+    return 'postgres';
+  }
+  if (slug.includes('java-fundamentals')) {
+    return 'java';
+  }
+  if (slug.includes('testing')) {
+    return 'testing';
+  }
+  if (slug.includes('aws')) {
+    return 'aws';
+  }
+  if (slug.includes('node')) {
+    return 'node';
+  }
+
+  return 'react';
 }
 
 function CourseVisualBase({
