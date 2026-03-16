@@ -1,20 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Course } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
-import type { CoursesQueryDto, CreateCourseDto, CourseDto, UpdateCourseDto } from './courses.schemas';
+import type {
+  CoursesQueryDto,
+  CreateCourseDto,
+  CourseDto,
+  PaginatedCoursesDto,
+  PaginatedCoursesQueryDto,
+  UpdateCourseDto,
+} from './courses.schemas';
 
 @Injectable()
 export class CoursesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(filters: CoursesQueryDto = {}): Promise<CourseDto[]> {
-    const normalizedQuery = filters.query?.trim().toLowerCase();
-    const normalizedTag = filters.tag?.trim().toLowerCase();
+    const where = buildCourseWhere(filters);
     const courses = await this.prisma.course.findMany({
-      where: {
-        ...(normalizedQuery ? { title: { contains: normalizedQuery } } : {}),
-        ...(normalizedTag ? { tagsJson: { contains: `"${normalizedTag}"` } } : {}),
-      },
+      where,
       orderBy: [
         { id: 'desc' },
         { title: 'asc' },
@@ -22,6 +25,40 @@ export class CoursesService {
     });
 
     return courses.map(mapCourseRecord);
+  }
+
+  async findPaginated(filters: PaginatedCoursesQueryDto): Promise<PaginatedCoursesDto> {
+    const where = buildCourseWhere(filters);
+    const page = filters.page;
+    const limit = filters.limit;
+    const skip = (page - 1) * limit;
+
+    const [total, courses] = await this.prisma.$transaction([
+      this.prisma.course.count({ where }),
+      this.prisma.course.findMany({
+        where,
+        orderBy: [
+          { id: 'desc' },
+          { title: 'asc' },
+        ],
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    const totalPages = total === 0 ? 0 : Math.ceil(total / limit);
+
+    return {
+      items: courses.map(mapCourseRecord),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1 && totalPages > 0,
+      },
+    };
   }
 
   async findLatest(limit = 3): Promise<CourseDto[]> {
@@ -147,6 +184,16 @@ export class CoursesService {
       where: { id },
     });
   }
+}
+
+function buildCourseWhere(filters: Pick<CoursesQueryDto, 'query' | 'tag'>) {
+  const normalizedQuery = filters.query?.trim().toLowerCase();
+  const normalizedTag = filters.tag?.trim().toLowerCase();
+
+  return {
+    ...(normalizedQuery ? { title: { contains: normalizedQuery } } : {}),
+    ...(normalizedTag ? { tagsJson: { contains: `"${normalizedTag}"` } } : {}),
+  };
 }
 
 function mapCourseRecord(course: Course): CourseDto {

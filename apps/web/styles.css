@@ -490,6 +490,26 @@ body::before {
   padding: 32px;
 }
 
+.admin-pagination {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-pagination-copy {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.admin-pagination-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .admin-toolbar {
   display: flex;
   align-items: end;
@@ -516,6 +536,11 @@ body::before {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-search {
+  width: min(100%, 320px);
 }
 
 .admin-toolbar-button {
@@ -1582,6 +1607,105 @@ h2 {
   background: rgba(34, 28, 23, 0.03);
 }
 
+.app-shell.theme-light .page-shell .admin-toolbar-copy p,
+.app-shell.theme-light .page-shell .admin-pagination-copy,
+.app-shell.theme-light .page-shell .admin-summary-card span,
+.app-shell.theme-light .page-shell .admin-course-cell span,
+.app-shell.theme-light .page-shell .admin-muted,
+.app-shell.theme-light .page-shell .admin-modal-header p,
+.app-shell.theme-light .page-shell .admin-card p {
+  color: #5f5346;
+}
+
+.app-shell.theme-light .page-shell .admin-table-shell {
+  background: rgba(255, 252, 247, 0.94);
+  border-color: rgba(57, 41, 26, 0.14);
+}
+
+.app-shell.theme-light .page-shell .admin-table th {
+  color: #6a5a4b;
+  background: rgba(87, 68, 45, 0.06);
+}
+
+.app-shell.theme-light .page-shell .admin-table td,
+.app-shell.theme-light .page-shell .admin-table-id,
+.app-shell.theme-light .page-shell .admin-course-cell strong,
+.app-shell.theme-light .page-shell .admin-action-button,
+.app-shell.theme-light .page-shell .admin-modal-close,
+.app-shell.theme-light .page-shell .admin-alert p {
+  color: #2f241b;
+}
+
+.app-shell.theme-light .page-shell .admin-table tbody tr {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.app-shell.theme-light .page-shell .admin-table tbody tr:hover {
+  background: rgba(111, 75, 255, 0.08);
+}
+
+.app-shell.theme-light .page-shell .admin-tag {
+  background: rgba(111, 75, 255, 0.1);
+  border-color: rgba(111, 75, 255, 0.2);
+  color: #5b3dbf;
+}
+
+.app-shell.theme-light .page-shell .admin-status-badge {
+  background: rgba(57, 41, 26, 0.06);
+  border-color: rgba(57, 41, 26, 0.14);
+  color: #4a3a2b;
+}
+
+.app-shell.theme-light .page-shell .admin-status-badge.is-highlighted {
+  background: rgba(243, 196, 107, 0.18);
+  border-color: rgba(197, 140, 33, 0.25);
+  color: #8b5a00;
+}
+
+.app-shell.theme-light .page-shell .admin-action-button {
+  background: rgba(255, 255, 255, 0.86);
+  border-color: rgba(57, 41, 26, 0.14);
+}
+
+.app-shell.theme-light .page-shell .admin-action-button.is-danger {
+  color: #a83838;
+  border-color: rgba(168, 56, 56, 0.22);
+  background: rgba(255, 91, 91, 0.12);
+}
+
+.app-shell.theme-light .page-shell .admin-alert {
+  background: rgba(255, 251, 244, 0.96);
+}
+
+.app-shell.theme-light .page-shell .admin-alert-success {
+  border-color: rgba(62, 164, 116, 0.24);
+  background: rgba(62, 164, 116, 0.12);
+}
+
+.app-shell.theme-light .page-shell .admin-alert-error {
+  border-color: rgba(255, 91, 91, 0.22);
+  background: rgba(255, 91, 91, 0.1);
+}
+
+.app-shell.theme-light .page-shell .admin-alert-close {
+  background: rgba(57, 41, 26, 0.05);
+  border-color: rgba(57, 41, 26, 0.12);
+  color: #2f241b;
+}
+
+.app-shell.theme-light .page-shell .admin-modal {
+  background: rgba(255, 251, 244, 0.98);
+}
+
+.app-shell.theme-light .page-shell .admin-modal-header {
+  border-bottom-color: rgba(57, 41, 26, 0.12);
+}
+
+.app-shell.theme-light .page-shell .admin-textarea,
+.app-shell.theme-light .page-shell .field input {
+  color: #2f241b;
+}
+
 .app-shell.theme-light .page-shell .metric-block,
 .app-shell.theme-light .page-shell .arrow,
 .app-shell.theme-light .page-shell .dots {
@@ -1634,6 +1758,10 @@ h2 {
 
   .admin-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-pagination {
+    align-items: stretch;
   }
 }
 

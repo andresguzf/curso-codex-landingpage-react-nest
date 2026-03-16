@@ -1,32 +1,49 @@
 import { AdminCoursesToolbar } from './AdminCoursesToolbar';
 import { AdminCourseRowActions } from './AdminCourseRowActions';
+import { AdminTablePagination } from './AdminTablePagination';
 import { formatHours, formatPrice, formatRating } from '../../lib/course-utils';
 import type { Course } from '../../types/course';
+import type { PaginationMeta } from '../../types/pagination';
 
 type AdminCoursesTableProps = {
   courses: Course[];
+  pagination: PaginationMeta;
+  searchQuery: string;
   isLoading: boolean;
   error: string | null;
   deleteError: string | null;
   deletingCourseId: number | null;
   onOpenCreate: () => void;
+  onSearchQueryChange: (value: string) => void;
   onEditCourse: (course: Course) => void;
   onDeleteCourse: (course: Course) => void;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
 };
 
 export function AdminCoursesTable({
   courses,
+  pagination,
+  searchQuery,
   isLoading,
   error,
   deleteError,
   deletingCourseId,
   onOpenCreate,
+  onSearchQueryChange,
   onEditCourse,
   onDeleteCourse,
+  onPreviousPage,
+  onNextPage,
 }: AdminCoursesTableProps) {
   return (
     <section className="catalog-panel admin-table-panel">
-      <AdminCoursesToolbar totalCourses={courses.length} onOpenCreate={onOpenCreate} />
+      <AdminCoursesToolbar
+        totalCourses={pagination.total}
+        searchQuery={searchQuery}
+        onOpenCreate={onOpenCreate}
+        onSearchQueryChange={onSearchQueryChange}
+      />
 
       <div className="catalog-header admin-table-header">
         <div className="section-copy">
@@ -99,6 +116,14 @@ export function AdminCoursesTable({
             </tbody>
           </table>
         </div>
+      ) : null}
+
+      {!isLoading && !error ? (
+        <AdminTablePagination
+          pagination={pagination}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+        />
       ) : null}
     </section>
   );

@@ -7,11 +7,13 @@ import {
   coursesQuerySchema,
   createCourseSchema,
   latestCoursesQuerySchema,
+  paginatedCoursesQuerySchema,
   updateCourseSchema,
   type CourseParamsDto,
   type CoursesQueryDto,
   type CreateCourseDto,
   type LatestCoursesQueryDto,
+  type PaginatedCoursesQueryDto,
   type UpdateCourseDto,
 } from './courses.schemas';
 
@@ -22,6 +24,11 @@ export class CoursesController {
   @Get()
   findAll(@ZodQuery(coursesQuerySchema) query: CoursesQueryDto) {
     return this.coursesService.findAll(query);
+  }
+
+  @Get('paginated')
+  findPaginated(@ZodQuery(paginatedCoursesQuerySchema) query: PaginatedCoursesQueryDto) {
+    return this.coursesService.findPaginated(query);
   }
 
   @Get('latest')

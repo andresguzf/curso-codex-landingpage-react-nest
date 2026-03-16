@@ -32,6 +32,20 @@ describe('Courses API (e2e)', () => {
     expect(response.body.length).toBeGreaterThan(0);
   });
 
+  it('GET /courses/paginated returns paginated seeded data', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/courses/paginated?page=1&limit=5')
+      .expect(200);
+
+    expect(Array.isArray(response.body.items)).toBe(true);
+    expect(response.body.items.length).toBeLessThanOrEqual(5);
+    expect(response.body.pagination).toMatchObject({
+      page: 1,
+      limit: 5,
+    });
+    expect(typeof response.body.pagination.total).toBe('number');
+  });
+
   it('POST /courses rejects unauthenticated requests', async () => {
     await request(app.getHttpServer())
       .post('/courses')

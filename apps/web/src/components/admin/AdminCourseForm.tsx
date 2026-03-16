@@ -1,3 +1,4 @@
+import type { SubmitEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { createCourseInputSchema } from '../../schemas/course-schema';
 import type { CreateCourseInput } from '../../types/course-form';
@@ -97,7 +98,7 @@ export function AdminCourseForm({
     });
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     const parsed = createCourseInputSchema.safeParse({

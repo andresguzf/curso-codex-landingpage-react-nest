@@ -48,6 +48,49 @@ describe('CoursesService', () => {
     });
   });
 
+  it('findPaginated returns items and pagination metadata', async () => {
+    const findMany = jest.fn().mockResolvedValue([
+      createCourseRecord({ id: 8, title: 'Curso paginado 8' }),
+      createCourseRecord({ id: 7, title: 'Curso paginado 7', slug: 'curso-paginado-7' }),
+    ]);
+    const count = jest.fn().mockResolvedValue(12);
+    const prisma = {
+      course: {
+        findMany,
+        count,
+      },
+      $transaction: jest.fn().mockImplementation(async (operations) => Promise.all(operations)),
+    };
+
+    const service = new CoursesService(prisma as never);
+    const result = await service.findPaginated({ page: 2, limit: 2, query: ' Curso ', tag: ' backend ' });
+
+    expect(count).toHaveBeenCalledWith({
+      where: {
+        title: { contains: 'curso' },
+        tagsJson: { contains: '"backend"' },
+      },
+    });
+    expect(findMany).toHaveBeenCalledWith({
+      where: {
+        title: { contains: 'curso' },
+        tagsJson: { contains: '"backend"' },
+      },
+      orderBy: [{ id: 'desc' }, { title: 'asc' }],
+      skip: 2,
+      take: 2,
+    });
+    expect(result.pagination).toEqual({
+      page: 2,
+      limit: 2,
+      total: 12,
+      totalPages: 6,
+      hasNextPage: true,
+      hasPreviousPage: true,
+    });
+    expect(result.items).toHaveLength(2);
+  });
+
   it('update throws when the course does not exist', async () => {
     const prisma = {
       course: {

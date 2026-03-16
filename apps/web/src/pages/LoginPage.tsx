@@ -1,3 +1,4 @@
+import type { SubmitEventHandler } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CompactHeader } from '../components/layout/CompactHeader';
@@ -15,7 +16,7 @@ export function LoginPage({ isLightTheme, onToggleTheme }: LoginPageProps) {
   const navigate = useNavigate();
   const { login, isSubmitting, error } = useAuth();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     const isSuccess = await login({ email, password });
 

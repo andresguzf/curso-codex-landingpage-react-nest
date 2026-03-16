@@ -31,6 +31,8 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
   const { logout, user } = useAuth();
   const {
     courses,
+    pagination,
+    searchQuery,
     isLoading,
     error,
     isSubmitting,
@@ -42,6 +44,9 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
     updateCourse,
     deleteCourse,
     resetMutationState,
+    goToNextPage,
+    goToPreviousPage,
+    setSearchQuery,
   } = useAdminCourses();
 
   const isModalOpen = modalMode !== null;
@@ -192,13 +197,18 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
 
           <AdminCoursesTable
             courses={courses}
+            pagination={pagination}
+            searchQuery={searchQuery}
             isLoading={isLoading}
             error={error}
             deleteError={deleteError}
             deletingCourseId={deletingCourseId}
             onOpenCreate={handleOpenCreate}
+            onSearchQueryChange={setSearchQuery}
             onEditCourse={handleOpenEdit}
             onDeleteCourse={handleDeleteCourse}
+            onPreviousPage={goToPreviousPage}
+            onNextPage={goToNextPage}
           />
         </main>
 

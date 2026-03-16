@@ -29,6 +29,29 @@ describe('CoursesController', () => {
     expect(result).toEqual([courseDto]);
   });
 
+  it('findPaginated delegates to the service', async () => {
+    const paginatedResponse = {
+      items: [courseDto],
+      pagination: {
+        page: 1,
+        limit: 10,
+        total: 1,
+        totalPages: 1,
+        hasNextPage: false,
+        hasPreviousPage: false,
+      },
+    };
+    const coursesService = {
+      findPaginated: jest.fn().mockResolvedValue(paginatedResponse),
+    };
+    const controller = new CoursesController(coursesService as never);
+
+    const result = await controller.findPaginated({ page: 1, limit: 10, query: 'react', tag: 'frontend' });
+
+    expect(coursesService.findPaginated).toHaveBeenCalledWith({ page: 1, limit: 10, query: 'react', tag: 'frontend' });
+    expect(result).toEqual(paginatedResponse);
+  });
+
   it('create delegates to the service', async () => {
     const coursesService = {
       create: jest.fn().mockResolvedValue(courseDto),

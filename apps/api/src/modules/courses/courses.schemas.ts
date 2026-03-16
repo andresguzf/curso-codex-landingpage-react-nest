@@ -32,8 +32,24 @@ export const coursesQuerySchema = z.object({
   query: z.string().trim().min(1).optional(),
   tag: z.string().trim().min(1).optional(),
 });
+export const paginatedCoursesQuerySchema = coursesQuerySchema.extend({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(50).default(10),
+});
 export const latestCoursesQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(10).optional(),
+});
+
+export const paginatedCoursesSchema = z.object({
+  items: z.array(courseSchema),
+  pagination: z.object({
+    page: z.number().int().positive(),
+    limit: z.number().int().positive(),
+    total: z.number().int().nonnegative(),
+    totalPages: z.number().int().nonnegative(),
+    hasNextPage: z.boolean(),
+    hasPreviousPage: z.boolean(),
+  }),
 });
 
 export type CourseDto = z.infer<typeof courseSchema>;
@@ -41,4 +57,6 @@ export type CreateCourseDto = z.infer<typeof createCourseSchema>;
 export type UpdateCourseDto = z.infer<typeof updateCourseSchema>;
 export type CourseParamsDto = z.infer<typeof courseParamsSchema>;
 export type CoursesQueryDto = z.infer<typeof coursesQuerySchema>;
+export type PaginatedCoursesQueryDto = z.infer<typeof paginatedCoursesQuerySchema>;
 export type LatestCoursesQueryDto = z.infer<typeof latestCoursesQuerySchema>;
+export type PaginatedCoursesDto = z.infer<typeof paginatedCoursesSchema>;

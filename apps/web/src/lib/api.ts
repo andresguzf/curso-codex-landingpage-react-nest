@@ -1,9 +1,10 @@
-import { courseSchema, coursesSchema } from '../schemas/course-schema';
+import { courseSchema, coursesSchema, paginatedCoursesSchema } from '../schemas/course-schema';
 import { loginResponseSchema } from '../schemas/auth-schema';
 import { ApiValidationError } from './api-errors';
 import type { LoginCredentials, LoginResponse } from '../types/auth';
 import type { CreateCourseInput } from '../types/course-form';
 import type { Course } from '../types/course';
+import type { PaginationMeta } from '../types/pagination';
 import { z } from 'zod';
 
 const defaultApiBaseUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
@@ -13,6 +14,13 @@ const countSchema = z.object({
 });
 
 type FetchCoursesOptions = {
+  query?: string;
+  tag?: string;
+};
+
+type FetchPaginatedCoursesOptions = {
+  page?: number;
+  limit?: number;
   query?: string;
   tag?: string;
 };
@@ -52,6 +60,28 @@ export async function fetchCourses(options: FetchCoursesOptions = {}): Promise<C
 
   const payload = await response.json();
   return coursesSchema.parse(payload);
+}
+
+export async function fetchPaginatedCourses(options: FetchPaginatedCoursesOptions = {}): Promise<{ items: Course[]; pagination: PaginationMeta }> {
+  const searchParams = new URLSearchParams();
+  searchParams.set('page', String(options.page ?? 1));
+  searchParams.set('limit', String(options.limit ?? 10));
+
+  if (options.query) {
+    searchParams.set('query', options.query);
+  }
+  if (options.tag && options.tag !== 'all') {
+    searchParams.set('tag', options.tag);
+  }
+
+  const response = await fetch(`${defaultApiBaseUrl}/courses/paginated?${searchParams.toString()}`);
+
+  if (!response.ok) {
+    throw new Error(`No se pudo cargar la tabla paginada (${response.status})`);
+  }
+
+  const payload = await response.json();
+  return paginatedCoursesSchema.parse(payload);
 }
 
 export async function fetchLatestCourses(limit = 3): Promise<Course[]> {

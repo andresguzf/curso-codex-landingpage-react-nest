@@ -16,6 +16,19 @@ export const courseSchema = z.object({
 });
 
 export const coursesSchema = z.array(courseSchema);
+export const paginationMetaSchema = z.object({
+  page: z.number().int().positive(),
+  limit: z.number().int().positive(),
+  total: z.number().int().nonnegative(),
+  totalPages: z.number().int().nonnegative(),
+  hasNextPage: z.boolean(),
+  hasPreviousPage: z.boolean(),
+});
+
+export const paginatedCoursesSchema = z.object({
+  items: coursesSchema,
+  pagination: paginationMetaSchema,
+});
 
 export const createCourseInputSchema = z.object({
   slug: z.string().trim().min(1, 'El slug es obligatorio'),
