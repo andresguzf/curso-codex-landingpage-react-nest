@@ -1,4 +1,8 @@
-import { coursesSchema } from '../schemas/course-schema';
+import { courseSchema, coursesSchema } from '../schemas/course-schema';
+import { loginResponseSchema } from '../schemas/auth-schema';
+import { ApiValidationError } from './api-errors';
+import type { LoginCredentials, LoginResponse } from '../types/auth';
+import type { CreateCourseInput } from '../types/course-form';
 import type { Course } from '../types/course';
 import { z } from 'zod';
 
@@ -12,6 +16,23 @@ type FetchCoursesOptions = {
   query?: string;
   tag?: string;
 };
+
+export async function loginRequest(credentials: LoginCredentials): Promise<LoginResponse> {
+  const response = await fetch(`${defaultApiBaseUrl}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Credenciales invalidas' : `No se pudo iniciar sesion (${response.status})`);
+  }
+
+  const payload = await response.json();
+  return loginResponseSchema.parse(payload);
+}
 
 export async function fetchCourses(options: FetchCoursesOptions = {}): Promise<Course[]> {
   const searchParams = new URLSearchParams();
@@ -64,4 +85,81 @@ export async function fetchCoursesCount(): Promise<number> {
 
   const payload = await response.json();
   return countSchema.parse(payload).total;
+}
+
+export async function createCourse(input: CreateCourseInput, token: string): Promise<Course> {
+  const response = await fetch(`${defaultApiBaseUrl}/courses`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      const payload = await response.json().catch(() => null);
+      const rawFieldErrors = payload?.issues?.fieldErrors as Record<string, string[] | undefined> | undefined;
+      const fieldErrors = rawFieldErrors
+        ? Object.fromEntries(
+          Object.entries(rawFieldErrors)
+            .map(([key, value]) => [key, value?.[0]])
+            .filter((entry): entry is [string, string] => Boolean(entry[1])),
+        )
+        : {};
+
+      throw new ApiValidationError(payload?.message ?? 'Error de validacion', fieldErrors);
+    }
+
+    throw new Error(response.status === 401 ? 'Tu sesion expiro. Vuelve a iniciar sesion.' : `No se pudo crear el curso (${response.status})`);
+  }
+
+  const payload = await response.json();
+  return courseSchema.parse(payload);
+}
+
+export async function updateCourse(id: number, input: CreateCourseInput, token: string): Promise<Course> {
+  const response = await fetch(`${defaultApiBaseUrl}/courses/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(input),
+  });
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      const payload = await response.json().catch(() => null);
+      const rawFieldErrors = payload?.issues?.fieldErrors as Record<string, string[] | undefined> | undefined;
+      const fieldErrors = rawFieldErrors
+        ? Object.fromEntries(
+          Object.entries(rawFieldErrors)
+            .map(([key, value]) => [key, value?.[0]])
+            .filter((entry): entry is [string, string] => Boolean(entry[1])),
+        )
+        : {};
+
+      throw new ApiValidationError(payload?.message ?? 'Error de validacion', fieldErrors);
+    }
+
+    throw new Error(response.status === 401 ? 'Tu sesion expiro. Vuelve a iniciar sesion.' : `No se pudo actualizar el curso (${response.status})`);
+  }
+
+  const payload = await response.json();
+  return courseSchema.parse(payload);
+}
+
+export async function deleteCourse(id: number, token: string): Promise<void> {
+  const response = await fetch(`${defaultApiBaseUrl}/courses/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Tu sesion expiro. Vuelve a iniciar sesion.' : `No se pudo eliminar el curso (${response.status})`);
+  }
 }

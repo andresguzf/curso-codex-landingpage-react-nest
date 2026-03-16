@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { CatalogSection } from './components/sections/CatalogSection';
 import { InstructorSection } from './components/sections/InstructorSection';
 import { LatestCoursesPanel } from './components/sections/LatestCoursesPanel';
+import { useAuth } from './hooks/useAuth';
 import { useCourses } from './hooks/useCourses';
+import { AdminPage } from './pages/AdminPage';
+import { LoginPage } from './pages/LoginPage';
 
-function App() {
-  const [isLightTheme, setIsLightTheme] = useState(false);
+function LandingPage({ isLightTheme, onToggleTheme }: { isLightTheme: boolean; onToggleTheme: () => void }) {
   const {
     courses,
     isLoading,
@@ -32,7 +35,7 @@ function App() {
   return (
     <div className={`app-shell${isLightTheme ? ' theme-light' : ''}`}>
       <div className="page-shell">
-        <Header isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme((value) => !value)} />
+        <Header isLightTheme={isLightTheme} onToggleTheme={onToggleTheme} />
 
         <main className="site-main">
           <section className="hero-panel" id="inicio">
@@ -63,6 +66,38 @@ function App() {
         <Footer />
       </div>
     </div>
+  );
+}
+
+function App() {
+  const [isLightTheme, setIsLightTheme] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme((value) => !value)} />} />
+      <Route
+        path="/login"
+        element={
+          isAuthenticated ? (
+            <Navigate to="/admin" replace />
+          ) : (
+            <LoginPage isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme((value) => !value)} />
+          )
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          isAuthenticated ? (
+            <AdminPage isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme((value) => !value)} />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
