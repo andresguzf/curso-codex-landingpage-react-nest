@@ -1,7 +1,7 @@
 import type { SubmitEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { createCourseInputSchema } from '../../schemas/course-schema';
-import type { CreateCourseInput } from '../../types/course-form';
+import type { CourseFormSubmission, CreateCourseInput } from '../../types/course-form';
 import type { FieldErrors } from '../../lib/api-errors';
 
 type AdminCourseFormProps = {
@@ -10,7 +10,7 @@ type AdminCourseFormProps = {
   fieldErrors: FieldErrors;
   initialValues?: CreateCourseInput;
   submitLabel: string;
-  onSubmit: (input: CreateCourseInput) => Promise<{ ok: true } | { ok: false; message: string }>;
+  onSubmit: (payload: CourseFormSubmission) => Promise<{ ok: true } | { ok: false; message: string }>;
   onCancel: () => void;
 };
 
@@ -19,6 +19,7 @@ type FormState = {
   title: string;
   category: string;
   description: string;
+  image_url: string;
   hours: string;
   rating: string;
   price: string;
@@ -31,6 +32,7 @@ const initialFormState: FormState = {
   title: '',
   category: '',
   description: '',
+  image_url: '',
   hours: '8',
   rating: '4.5',
   price: '29.9',
@@ -48,6 +50,7 @@ function toFormState(input?: CreateCourseInput): FormState {
     title: input.title,
     category: input.category,
     description: input.description,
+    image_url: input.image_url ?? '',
     hours: String(input.hours),
     rating: String(input.rating),
     price: String(input.price),
@@ -68,6 +71,8 @@ export function AdminCourseForm({
   const [form, setForm] = useState<FormState>(toFormState(initialValues));
   const [validationErrors, setValidationErrors] = useState<FieldErrors>({});
   const [serverFieldErrors, setServerFieldErrors] = useState<FieldErrors>({});
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(initialValues?.image_url ?? null);
 
   const mergedFieldErrors = {
     ...serverFieldErrors,
@@ -82,7 +87,22 @@ export function AdminCourseForm({
     setForm(toFormState(initialValues));
     setValidationErrors({});
     setServerFieldErrors({});
+    setImageFile(null);
+    setImagePreviewUrl(initialValues?.image_url ?? null);
   }, [initialValues]);
+
+  useEffect(() => {
+    if (!imageFile) {
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(imageFile);
+    setImagePreviewUrl(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [imageFile]);
 
   const updateField = <TKey extends keyof FormState>(key: TKey, value: FormState[TKey]) => {
     setForm((currentValue) => ({ ...currentValue, [key]: value }));
@@ -106,6 +126,7 @@ export function AdminCourseForm({
       title: form.title.trim(),
       category: form.category.trim(),
       description: form.description.trim(),
+      image_url: form.image_url.trim() ? form.image_url.trim() : null,
       hours: Number(form.hours),
       rating: Number(form.rating),
       price: Number(form.price),
@@ -127,12 +148,17 @@ export function AdminCourseForm({
     }
 
     setValidationErrors({});
-    const result = await onSubmit(parsed.data);
+    const result = await onSubmit({
+      course: parsed.data,
+      imageFile,
+    });
 
     if (result.ok) {
       setForm(toFormState(initialValues));
       setValidationErrors({});
       setServerFieldErrors({});
+      setImageFile(null);
+      setImagePreviewUrl(initialValues?.image_url ?? null);
     }
   };
 
@@ -177,6 +203,24 @@ export function AdminCourseForm({
             onChange={(event) => updateField('description', event.target.value)}
           />
           {mergedFieldErrors.description ? <small className="field-error">{mergedFieldErrors.description}</small> : null}
+        </label>
+
+        <label className="field admin-form-field-span">
+          <span>Imagen del curso</span>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) => {
+              const nextFile = event.target.files?.[0] ?? null;
+              setImageFile(nextFile);
+            }}
+          />
+          <small className="field-hint">Sube una imagen a Cloudinary. Si no existe una URL, el landing usara el SVG de fallback.</small>
+          {imagePreviewUrl ? (
+            <div className="admin-upload-preview">
+              <img src={imagePreviewUrl} alt="Vista previa del curso" className="admin-upload-preview-image" />
+            </div>
+          ) : null}
         </label>
 
         <label className="field">

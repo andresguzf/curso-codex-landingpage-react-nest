@@ -1,7 +1,7 @@
 import { renderHook, waitFor, act } from '@testing-library/react';
 import { useAdminCourses } from './useAdminCourses';
 import { useAuthStore } from '../app/store/useAuthStore';
-import { createCourse, fetchPaginatedCourses } from '../lib/api';
+import { createCourse, fetchPaginatedCourses, uploadCourseImage } from '../lib/api';
 import { adminUser, baseCourse, defaultPagination, secondCourse } from '../test/fixtures';
 
 vi.mock('../lib/api', () => ({
@@ -9,11 +9,13 @@ vi.mock('../lib/api', () => ({
   createCourse: vi.fn(),
   updateCourse: vi.fn(),
   deleteCourse: vi.fn(),
+  uploadCourseImage: vi.fn(),
 }));
 
 describe('useAdminCourses', () => {
   const mockedFetchPaginatedCourses = vi.mocked(fetchPaginatedCourses);
   const mockedCreateCourse = vi.mocked(createCourse);
+  const mockedUploadCourseImage = vi.mocked(uploadCourseImage);
 
   beforeEach(() => {
     useAuthStore.setState({
@@ -80,6 +82,7 @@ describe('useAdminCourses', () => {
         },
       });
     mockedCreateCourse.mockResolvedValue(secondCourse);
+    mockedUploadCourseImage.mockReset();
 
     const { result } = renderHook(() => useAdminCourses());
 
@@ -89,15 +92,19 @@ describe('useAdminCourses', () => {
 
     await act(async () => {
       await result.current.createCourse({
-        slug: secondCourse.slug,
-        title: secondCourse.title,
-        category: secondCourse.category,
-        description: secondCourse.description,
-        hours: secondCourse.hours,
-        rating: secondCourse.rating,
-        price: secondCourse.price,
-        best_sellers: secondCourse.best_sellers,
-        tags: secondCourse.tags,
+        course: {
+          slug: secondCourse.slug,
+          title: secondCourse.title,
+          category: secondCourse.category,
+          description: secondCourse.description,
+          image_url: null,
+          hours: secondCourse.hours,
+          rating: secondCourse.rating,
+          price: secondCourse.price,
+          best_sellers: secondCourse.best_sellers,
+          tags: secondCourse.tags,
+        },
+        imageFile: null,
       });
     });
 
@@ -107,6 +114,7 @@ describe('useAdminCourses', () => {
         title: secondCourse.title,
         category: secondCourse.category,
         description: secondCourse.description,
+        image_url: null,
         hours: secondCourse.hours,
         rating: secondCourse.rating,
         price: secondCourse.price,

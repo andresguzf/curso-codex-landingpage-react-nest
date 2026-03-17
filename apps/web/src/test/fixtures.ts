@@ -15,6 +15,7 @@ export const baseCourse: Course = {
   title: 'Curso de React Avanzado',
   category: 'Frontend',
   description: 'Un curso para profundizar en React.',
+  image_url: null,
   hours: 12.5,
   rating: 4.8,
   price: 39.9,

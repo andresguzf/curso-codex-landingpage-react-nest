@@ -12,6 +12,10 @@ const courseTagsSchema = z.array(z.string().min(1));
 const countSchema = z.object({
   total: z.number().int().nonnegative(),
 });
+const uploadImageResponseSchema = z.object({
+  url: z.string().url(),
+  public_id: z.string().min(1),
+});
 
 type FetchCoursesOptions = {
   query?: string;
@@ -192,4 +196,24 @@ export async function deleteCourse(id: number, token: string): Promise<void> {
   if (!response.ok) {
     throw new Error(response.status === 401 ? 'Tu sesion expiro. Vuelve a iniciar sesion.' : `No se pudo eliminar el curso (${response.status})`);
   }
+}
+
+export async function uploadCourseImage(file: File, token: string): Promise<string> {
+  const formData = new FormData();
+  formData.set('image', file);
+
+  const response = await fetch(`${defaultApiBaseUrl}/uploads/course-image`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Tu sesion expiro. Vuelve a iniciar sesion.' : `No se pudo subir la imagen (${response.status})`);
+  }
+
+  const payload = await response.json();
+  return uploadImageResponseSchema.parse(payload).url;
 }

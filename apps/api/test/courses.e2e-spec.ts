@@ -88,6 +88,7 @@ describe('Courses API (e2e)', () => {
       .expect(201);
 
     expect(createResponse.body.slug).toBe('curso-e2e-test');
+    expect(createResponse.body.image_url).toBeNull();
     expect(createResponse.body.best_sellers).toBe(false);
     expect(createResponse.body.tags).toEqual([]);
 

@@ -122,6 +122,7 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
       title: selectedCourse.title,
       category: selectedCourse.category,
       description: selectedCourse.description,
+      image_url: selectedCourse.image_url,
       hours: selectedCourse.hours,
       rating: selectedCourse.rating,
       price: selectedCourse.price,
@@ -228,17 +229,17 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
             initialValues={initialValues}
             submitLabel={isEditing ? 'Guardar cambios' : 'Crear curso'}
             onCancel={handleCloseModal}
-            onSubmit={async (input) => {
+            onSubmit={async (payload) => {
               const result = isEditing && selectedCourse
-                ? await updateCourse(selectedCourse.id, input)
-                : await createCourse(input);
+                ? await updateCourse(selectedCourse.id, payload)
+                : await createCourse(payload);
 
               if (result.ok) {
                 pushAlert(
                   'success',
                   isEditing && selectedCourse
-                    ? `Curso "${input.title}" actualizado correctamente.`
-                    : `Curso "${input.title}" creado correctamente.`,
+                    ? `Curso "${payload.course.title}" actualizado correctamente.`
+                    : `Curso "${payload.course.title}" creado correctamente.`,
                 );
                 handleCloseModal();
               } else {

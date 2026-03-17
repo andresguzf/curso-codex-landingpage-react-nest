@@ -9,6 +9,7 @@ function createCourseRecord(overrides: Partial<Course> = {}): Course {
     title: 'Curso backend moderno',
     category: 'Backend',
     description: 'Descripcion de prueba para el curso.',
+    image_url: null,
     hours: 12.5,
     rating: 4.8,
     price: 59.9,

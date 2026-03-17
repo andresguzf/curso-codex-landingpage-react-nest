@@ -5,6 +5,7 @@ const courseCreateFieldsSchema = z.object({
   title: z.string().min(10).max(120),
   category: z.string().min(1),
   description: z.string().min(1),
+  image_url: z.string().url().nullable().optional(),
   hours: z.number().min(2).max(45),
   rating: z.number().min(0).max(5),
   price: z.number().nonnegative().min(7).max(100),

@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useEffect, useId, useState } from 'react';
 import type { Course } from '../../types/course';
 
 type VisualShape =
@@ -27,6 +27,24 @@ type CourseVisualBaseProps = {
 };
 
 export function CourseVisual({ course }: { course: Course }) {
+  const [hasImageError, setHasImageError] = useState(false);
+
+  useEffect(() => {
+    setHasImageError(false);
+  }, [course.image_url]);
+
+  if (course.image_url && !hasImageError) {
+    return (
+      <img
+        className="course-cover-image"
+        src={course.image_url}
+        alt={`Portada del curso ${course.title}`}
+        loading="lazy"
+        onError={() => setHasImageError(true)}
+      />
+    );
+  }
+
   switch (getVisualShapeFromSlug(course.slug)) {
     case 'spring':
       return <CourseVisualBase id={course.slug} accentA="#83d56f" accentB="#2d9b47" titleWidth={90} bodyWidths={[76, 96]} shape="spring" />;

@@ -843,6 +843,30 @@ body::before {
   box-shadow: 0 0 0 4px rgba(185, 132, 255, 0.12);
 }
 
+.field-hint {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.admin-upload-preview {
+  margin-top: 12px;
+  max-width: 280px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-upload-preview-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
 .admin-checkbox {
   display: inline-flex;
   align-items: center;
@@ -1132,6 +1156,13 @@ h2 {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.course-cover-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
 }
 
 .course-body,

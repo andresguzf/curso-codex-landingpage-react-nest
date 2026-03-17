@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { createCourse, deleteCourse, fetchPaginatedCourses, updateCourse } from '../lib/api';
+import { createCourse, deleteCourse, fetchPaginatedCourses, updateCourse, uploadCourseImage } from '../lib/api';
 import { ApiValidationError } from '../lib/api-errors';
 import type { FieldErrors } from '../lib/api-errors';
-import type { CreateCourseInput } from '../types/course-form';
+import type { CourseFormSubmission } from '../types/course-form';
 import type { PaginationMeta } from '../types/pagination';
 import type { Course } from '../types/course';
 import { useAuthStore } from '../app/store/useAuthStore';
@@ -102,7 +102,7 @@ export function useAdminCourses() {
     };
   }, [debouncedSearchQuery]);
 
-  const handleCreateCourse = async (input: CreateCourseInput): Promise<AdminMutationResult> => {
+  const handleCreateCourse = async ({ course, imageFile }: CourseFormSubmission): Promise<AdminMutationResult> => {
     if (!token) {
       const message = 'No hay una sesion valida para crear cursos';
       setSubmitError(message);
@@ -114,7 +114,8 @@ export function useAdminCourses() {
     setSubmitFieldErrors({});
 
     try {
-      await createCourse(input, token);
+      const imageUrl = imageFile ? await uploadCourseImage(imageFile, token) : (course.image_url ?? null);
+      await createCourse({ ...course, image_url: imageUrl }, token);
       await loadCourses(1);
       return { ok: true };
     } catch (submitError) {
@@ -132,7 +133,7 @@ export function useAdminCourses() {
     }
   };
 
-  const handleUpdateCourse = async (id: number, input: CreateCourseInput): Promise<AdminMutationResult> => {
+  const handleUpdateCourse = async (id: number, { course, imageFile }: CourseFormSubmission): Promise<AdminMutationResult> => {
     if (!token) {
       const message = 'No hay una sesion valida para actualizar cursos';
       setSubmitError(message);
@@ -144,7 +145,8 @@ export function useAdminCourses() {
     setSubmitFieldErrors({});
 
     try {
-      await updateCourse(id, input, token);
+      const imageUrl = imageFile ? await uploadCourseImage(imageFile, token) : (course.image_url ?? null);
+      await updateCourse(id, { ...course, image_url: imageUrl }, token);
       await loadCourses();
       return { ok: true };
     } catch (submitError) {
