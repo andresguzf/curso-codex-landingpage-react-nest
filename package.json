@@ -12,6 +12,8 @@
     "build": "npm run build -w @cursos/api && npm run build -w @cursos/web",
     "prisma:generate": "npm run prisma:generate -w @cursos/api",
     "prisma:db:push": "npm run prisma:db:push -w @cursos/api",
+    "prisma:migrate:dev": "npm run prisma:migrate:dev -w @cursos/api",
+    "prisma:migrate:deploy": "npm run prisma:migrate:deploy -w @cursos/api",
     "prisma:seed": "npm run prisma:seed -w @cursos/api"
   },
   "devDependencies": {

@@ -8,8 +8,10 @@
     "start:dev": "nest start --watch",
     "prisma:generate": "prisma generate",
     "prisma:db:push": "prisma db push",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:seed": "prisma db seed",
-    "test": "DATABASE_URL=file:./test.db JWT_SECRET=test-jwt-secret-12345 JWT_EXPIRES_IN=1d PORT=3100 CORS_ORIGIN=http://localhost:5173 jest --runInBand --config jest.config.ts"
+    "test": "JWT_SECRET=test-jwt-secret-12345 JWT_EXPIRES_IN=1d PORT=3100 CORS_ORIGIN=http://localhost:5173 jest --runInBand --config jest.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",
