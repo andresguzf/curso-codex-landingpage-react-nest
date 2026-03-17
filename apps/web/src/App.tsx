@@ -8,6 +8,7 @@ import { LatestCoursesPanel } from './components/sections/LatestCoursesPanel';
 import { useAuth } from './hooks/useAuth';
 import { useCourses } from './hooks/useCourses';
 import { AdminPage } from './pages/AdminPage';
+import { CourseDetailPage } from './pages/CourseDetailPage';
 import { LoginPage } from './pages/LoginPage';
 
 function LandingPage({ isLightTheme, onToggleTheme }: { isLightTheme: boolean; onToggleTheme: () => void }) {
@@ -76,6 +77,10 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme((value) => !value)} />} />
+      <Route
+        path="/cursos/:courseId/:slug"
+        element={<CourseDetailPage isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme((value) => !value)} />}
+      />
       <Route
         path="/login"
         element={

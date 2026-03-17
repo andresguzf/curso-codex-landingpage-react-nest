@@ -1,12 +1,17 @@
+import { useLocation } from 'react-router-dom';
+
 type NavbarProps = {
   isLightTheme: boolean;
   onToggleTheme: () => void;
 };
 
 export function Navbar({ isLightTheme, onToggleTheme }: NavbarProps) {
+  const { pathname } = useLocation();
+  const getSectionHref = (sectionId: string) => (pathname === '/' ? `#${sectionId}` : `/#${sectionId}`);
+
   return (
     <nav className="navbar" aria-label="Principal">
-      <a className="brand" href="#inicio">
+      <a className="brand" href={getSectionHref('inicio')}>
         <span className="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 40 40">
             <defs>
@@ -27,21 +32,21 @@ export function Navbar({ isLightTheme, onToggleTheme }: NavbarProps) {
 
       <ul className="nav-links">
         <li>
-          <a href="#inicio">Inicio</a>
+          <a href={getSectionHref('inicio')}>Inicio</a>
         </li>
         <li>
-          <a href="#sobre-mi">Instructor</a>
+          <a href={getSectionHref('sobre-mi')}>Instructor</a>
         </li>
         <li>
-          <a href="#cursos">Cursos</a>
+          <a href={getSectionHref('cursos')}>Cursos</a>
         </li>
         <li>
-          <a href="#contacto">Contacto</a>
+          <a href={getSectionHref('contacto')}>Contacto</a>
         </li>
       </ul>
 
       <div className="nav-actions">
-        <a className="nav-cta" href="#cursos">
+        <a className="nav-cta" href={getSectionHref('cursos')}>
           Ver catalogo
         </a>
         <button

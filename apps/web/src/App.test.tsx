@@ -15,6 +15,10 @@ vi.mock('./pages/AdminPage', () => ({
   AdminPage: () => <div>Admin mock</div>,
 }));
 
+vi.mock('./pages/CourseDetailPage', () => ({
+  CourseDetailPage: () => <div>Detalle mock</div>,
+}));
+
 describe('App routes', () => {
   const mockedUseAuth = vi.mocked(useAuth);
 
@@ -61,5 +65,25 @@ describe('App routes', () => {
     );
 
     expect(await screen.findByText('Admin mock')).toBeInTheDocument();
+  });
+
+  it('renderiza la ruta publica de detalle de curso', async () => {
+    mockedUseAuth.mockReturnValue({
+      token: null,
+      user: null,
+      error: null,
+      isSubmitting: false,
+      isAuthenticated: false,
+      login: vi.fn(),
+      logout: vi.fn(),
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/cursos/1/react-avanzado']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByText('Detalle mock')).toBeInTheDocument();
   });
 });

@@ -5,6 +5,7 @@ export const formatHours = (hours: number) =>
   `${Number.isInteger(hours) ? String(hours) : hours.toFixed(1)} horas`;
 export const formatRating = (rating: number) => rating.toFixed(1);
 export const getPrimaryTag = (course: Course) => (course.tags[0] ?? course.category).toUpperCase();
+export const getCourseDetailHref = (course: Course) => `/cursos/${course.id}/${course.slug}`;
 
 export const getResultsCopy = (filteredCount: number, query: string, activeTag: string) => {
   if (!query && activeTag === 'all') {

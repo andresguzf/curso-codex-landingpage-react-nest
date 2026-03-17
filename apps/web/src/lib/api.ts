@@ -99,6 +99,21 @@ export async function fetchLatestCourses(limit = 3): Promise<Course[]> {
   return coursesSchema.parse(payload);
 }
 
+export async function fetchCourseById(id: number): Promise<Course> {
+  const response = await fetch(`${defaultApiBaseUrl}/courses/${id}`);
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error('Curso no encontrado');
+    }
+
+    throw new Error(`No se pudo cargar el detalle del curso (${response.status})`);
+  }
+
+  const payload = await response.json();
+  return courseSchema.parse(payload);
+}
+
 export async function fetchCourseTags(): Promise<string[]> {
   const response = await fetch(`${defaultApiBaseUrl}/courses/tags`);
 

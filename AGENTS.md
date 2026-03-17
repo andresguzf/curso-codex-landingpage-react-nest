@@ -5,8 +5,7 @@ This repo is a monorepo with a React frontend and a NestJS backend. Prioritize `
 
 Main layout:
 - `apps/web/`: React + Vite + TypeScript frontend.
-- `apps/web/src/main.tsx`: React entrypoint with `BrowserRouter`.
-- `apps/web/src/App.tsx`: public landing + `login` + protected `admin`.
+- `apps/web/src/main.tsx` and `apps/web/src/App.tsx`: entrypoint, public landing, `login` and protected `admin`.
 - `apps/web/src/app/store/`: Zustand stores for courses and auth session.
 - `apps/web/src/hooks/`: reusable hooks like `useCourses`, `useAuth`, `useAdminCourses`.
 - `apps/web/src/components/layout/`: `Header`, `Navbar`, `Footer`, `CompactHeader`.
@@ -18,16 +17,17 @@ Main layout:
 - `apps/web/src/schemas/`: Zod schemas for frontend payloads and API responses.
 - `apps/web/src/types/`: shared frontend types.
 - `apps/web/styles.css`: global styles for landing, login and admin.
-- `apps/api/`: NestJS API with Prisma and SQLite.
-- `apps/api/src/main.ts`: Nest bootstrap and CORS setup.
-- `apps/api/src/app.module.ts`: root module with `ConfigModule`.
+- `apps/api/`: NestJS API with Prisma and Supabase Postgres.
+- `apps/api/src/main.ts` and `apps/api/src/app.module.ts`: Nest bootstrap, CORS and root module setup.
 - `apps/api/src/config/`: env validation and typed config.
 - `apps/api/src/common/`: Zod decorators and validation pipe.
 - `apps/api/src/prisma/`: Prisma module and service.
 - `apps/api/src/modules/auth/`: JWT login flow.
 - `apps/api/src/modules/users/`: user lookup for auth.
 - `apps/api/src/modules/courses/`: catalog endpoints and business logic.
-- `apps/api/prisma/schema.prisma`: Prisma schema for SQLite.
+- `apps/api/src/modules/uploads/`: protected upload endpoint and Cloudinary integration.
+- `apps/api/prisma/schema.prisma`: Prisma schema for Supabase Postgres.
+- `apps/api/prisma/migrations/`: Prisma SQL migrations.
 - `apps/api/prisma/seed.mjs`: seeds courses and admin user.
 - `apps/api/prisma.config.ts`: Prisma CLI config.
 - `apps/api/test/`: e2e and Prisma integration tests.
@@ -37,8 +37,6 @@ Ignore generated output unless the task is specifically about build artifacts:
 - `node_modules/`
 - `dist/`
 - `*.tsbuildinfo`
-- `apps/api/prisma/*.db`
-- `apps/api/prisma/*.db-journal`
 
 ## Commands
 Install from repo root:
@@ -57,7 +55,7 @@ npm run build
 Prisma:
 ```bash
 npm run prisma:generate
-npm run prisma:db:push
+npm run prisma:migrate:deploy
 npm run prisma:seed
 ```
 
@@ -103,9 +101,11 @@ Frontend:
 - Admin table uses backend pagination only. Landing still uses the public non-paginated flow it already had.
 - Admin search filters by course title against backend `query`.
 - Admin create/edit/delete use protected endpoints with bearer token.
+- Admin form can upload a course image; the backend returns a Cloudinary URL and the course persists `image_url`.
 - Keep reusable admin UI split by role: toolbar, table, row actions, modal, form, alerts, pagination.
 - Validate external data with Zod before storing it in frontend state.
 - In React 19 typings, prefer `SubmitEventHandler` instead of deprecated `FormEvent` or `FormEventHandler`.
+- Course cards use `image_url` when present and fall back to the slug-based SVG visual when absent or broken.
 
 Backend:
 
@@ -117,15 +117,18 @@ Backend:
 - Keep auth isolated under `auth` and protect mutations with `JwtAuthGuard`.
 - Keep Prisma schema, Zod schemas and API payloads aligned.
 - Keep Prisma CLI config in `apps/api/prisma.config.ts`.
+- Runtime and Prisma CLI now use a single direct Supabase connection via `DATABASE_URL`.
+- Use Prisma migrations against Supabase Postgres; do not reintroduce SQLite-specific assumptions.
+- Cloudinary uploads are handled server-side by the protected `uploads` module and stored as course `image_url`.
 - Keep `courses.json` aligned with Prisma seed data.
 
 Current course payload:
-- `id`, `slug`, `title`, `category`, `description`, `hours`, `rating`, `price`, `best_sellers`, `tags`, `created_at`, `updated_at`
-Current course payload: `id`, `slug`, `title`, `category`, `description`, `hours`, `rating`, `price`, `best_sellers`, `tags`, `created_at`, `updated_at`
+- `id`, `slug`, `title`, `category`, `description`, `image_url`, `hours`, `rating`, `price`, `best_sellers`, `tags`, `created_at`, `updated_at`
 Current search behavior: `GET /courses?query=` filters by `title`; `tag=` still filters by tags.
 
 ## Current API Surface
 - `POST /auth/login`
+- `POST /uploads/course-image` protected with JWT
 - `GET /courses`
 - `GET /courses/paginated`
 - `GET /courses/latest`
@@ -143,6 +146,7 @@ Current search behavior: `GET /courses?query=` filters by `title`; `tag=` still 
 - admin shows top alerts for create/update/delete feedback.
 - delete confirmation uses `sweetalert2`.
 - admin table supports search, pagination, create, edit and delete.
+- admin create/edit can upload a file and preview it before submit.
 - modal closes only manually through `Cancelar` or `×`.
 
 ## Testing
@@ -152,9 +156,11 @@ Validate after meaningful changes:
 - `POST /auth/login` returns JWT for seeded admin
 - `GET /courses/latest` returns latest 3 by `id desc`
 - `GET /courses/paginated?page=1&limit=8` returns `items` plus `pagination`
+- `POST /uploads/course-image` requires bearer auth and a valid image file
 - protected mutations require bearer auth
 - admin search and pagination work against backend data
 - admin create, edit and delete reflect in the table
+- course cards render Cloudinary images and fall back to SVG when `image_url` is null or fails
 
 If adding tests:
 - keep backend unit tests near source
@@ -171,4 +177,4 @@ PRs should include:
 
 ## Skills
 - `react-rules`: use for React components, routing, hooks, stores, forms, admin UI, API integration.
-- `nestjs-best-practices`: use for Nest modules, controllers, services, Prisma, SQLite, Zod and REST endpoints.
+- `nestjs-best-practices`: use for Nest modules, controllers, services, Prisma, Supabase Postgres, Zod and REST endpoints.
