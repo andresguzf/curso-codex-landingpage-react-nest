@@ -26,7 +26,7 @@ export function Navbar({ isLightTheme, onToggleTheme }: NavbarProps) {
         </span>
         <span className="brand-copy">
           <strong>Andres Guzman</strong>
-          <span>CodeCinema Academy</span>
+          <span>Dev Academy</span>
         </span>
       </a>
 

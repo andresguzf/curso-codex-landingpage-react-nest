@@ -37,7 +37,7 @@ describe('CoursesService', () => {
 
     expect(findMany).toHaveBeenCalledWith({
       where: {
-        title: { contains: 'react' },
+        title: { contains: 'React', mode: 'insensitive' },
         tagsJson: { contains: '"frontend"' },
       },
       orderBy: [{ id: 'desc' }, { title: 'asc' }],
@@ -68,13 +68,13 @@ describe('CoursesService', () => {
 
     expect(count).toHaveBeenCalledWith({
       where: {
-        title: { contains: 'curso' },
+        title: { contains: 'Curso', mode: 'insensitive' },
         tagsJson: { contains: '"backend"' },
       },
     });
     expect(findMany).toHaveBeenCalledWith({
       where: {
-        title: { contains: 'curso' },
+        title: { contains: 'Curso', mode: 'insensitive' },
         tagsJson: { contains: '"backend"' },
       },
       orderBy: [{ id: 'desc' }, { title: 'asc' }],

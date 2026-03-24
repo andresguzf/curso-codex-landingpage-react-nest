@@ -5,11 +5,10 @@ type InstructorSectionProps = {
 export function InstructorSection({ totalCourses }: InstructorSectionProps) {
   return (
     <div className="hero-copy" id="sobre-mi">
-      <span className="eyebrow">Arquitectura, backend y criterio tecnico</span>
-      <h1>Software real, bien explicado.</h1>
+      <span className="eyebrow">Arquitectura backend y frontend</span>
+      <h1>Prepara tu carrera para el futuro</h1>
       <p className="hero-lead">
-        Programas pensados para desarrolladores que quieren dominar Java, Spring, microservicios, Kafka, cloud y frontend
-        moderno con una mirada de produccion y equipo real.
+        Consigue acceso ilimitado a cientos de cursos destacados sobre tecnología, desarrollo, fullstack y muchos otros temas. Además, puedes obtener 2 meses gratis por tiempo limitado.
       </p>
 
       <div className="hero-actions">
@@ -24,7 +23,7 @@ export function InstructorSection({ totalCourses }: InstructorSectionProps) {
       <div className="hero-proof">
         <div className="proof-card">
           <span>Ruta guiada</span>
-          <strong>Desde fundamentos hasta despliegue</strong>
+          <strong>Desde fundamentos hasta temas avanzados</strong>
         </div>
         <div className="proof-card">
           <span>Enfoque</span>
@@ -52,10 +51,6 @@ export function InstructorSection({ totalCourses }: InstructorSectionProps) {
             <span>Rating promedio</span>
           </div>
         </div>
-
-        <p className="spotlight-quote">
-          “Explicaciones directas, buena arquitectura y contenido que conecta con lo que se usa en equipos de software.”
-        </p>
       </div>
     </div>
   );

@@ -31,12 +31,12 @@ export function CatalogSection({
     <section className="catalog-panel" id="cursos">
       <div className="catalog-header">
         <div className="section-copy">
-          <span className="eyebrow">Catalogo de cursos</span>
-          <h2 className="catalog-title">Encuentra tu siguiente stack.</h2>
+          <span className="eyebrow">Empecemos a aprender</span>
+          {/* <h2 className="catalog-title">Encuentra tu siguiente stack.</h2>
           <p>
             Una vitrina pensada para comprar mejor: busqueda clara, filtros por tecnologia y tarjetas con informacion mas
             facil de escanear.
-          </p>
+          </p> */}
         </div>
 
         <div className="catalog-tools">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { Footer } from '../components/layout/Footer';
 import { Header } from '../components/layout/Header';
@@ -107,36 +107,6 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
   }, [parsedCourseId]);
 
   const hasSlugMismatch = course !== null && slug !== course.slug;
-  const stats = useMemo(() => {
-    if (!course) {
-      return [];
-    }
-
-    return [
-      { label: 'Duracion', value: formatHours(course.hours) },
-      { label: 'Valoracion', value: `${formatRating(course.rating)} / 5` },
-      { label: 'Precio', value: formatPrice(course.price) },
-    ];
-  }, [course]);
-  const productDetails = useMemo(() => {
-    if (!course) {
-      return [];
-    }
-
-    const dateFormatter = new Intl.DateTimeFormat('es-CL', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
-
-    return [
-      { label: 'ID del curso', value: String(course.id) },
-      { label: 'Slug', value: course.slug },
-      { label: 'Categoria', value: course.category },
-      { label: 'Actualizado', value: dateFormatter.format(new Date(course.updated_at)) },
-    ];
-  }, [course]);
-
   if (hasSlugMismatch && course) {
     return <Navigate to={getCourseDetailHref(course)} replace />;
   }
@@ -168,8 +138,8 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
                     <span>/</span>
                     <span>{course.category}</span>
                   </div>
-                  <h1>{course.title}</h1>
-                  <p className="hero-lead">{course.description}</p>
+                  <h2>{course.title}</h2>
+                  <p className="hero-lead">{renderDescriptionWithBreaks(course.description)}</p>
                   <div className="course-badges">
                     <span className="course-tag">{getPrimaryTag(course)}</span>
                     <span className="course-tag">{course.category}</span>
@@ -183,14 +153,14 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
                       Pedir informacion
                     </Link>
                   </div>
-                  <div className="hero-proof course-detail-proof">
+                  {/* <div className="hero-proof course-detail-proof">
                     {stats.map((stat) => (
                       <div key={stat.label} className="proof-card">
                         <span>{stat.label}</span>
                         <strong>{stat.value}</strong>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
 
                 <aside className="hero-stage" aria-label="Resumen visual del curso">
@@ -231,10 +201,10 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
                     </div>
                     <div className="course-detail-purchase">
                       <div>
-                        <span className="eyebrow">Precio</span>
+                        {/* <span className="eyebrow">Precio</span> */}
                         <strong>{formatPrice(course.price)}</strong>
                       </div>
-                      <p>Detalle publico por `id` y `slug`, listo para compartir y posicionar cada curso como producto.</p>
+                      {/* <p>Detalle publico por `id` y `slug`, listo para compartir y posicionar cada curso como producto.</p> */}
                     </div>
                   </div>
                 </aside>
@@ -242,7 +212,7 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
             ) : null}
           </section>
 
-          {!isLoading && !error && course ? (
+          {/* {!isLoading && !error && course ? (
             <section className="catalog-panel course-detail-panel">
               <div className="catalog-header course-detail-section-header">
                 <div className="section-copy">
@@ -264,7 +234,7 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
                 <article className="manifesto-card course-detail-description-card">
                   <span className="eyebrow">Descripcion</span>
                   <h2>Donde encaja este curso en tu roadmap.</h2>
-                  <p>{course.description}</p>
+                  <p>{renderDescriptionWithBreaks(course.description)}</p>
                 </article>
 
                 <article className="latest-panel course-detail-tags-card">
@@ -293,7 +263,7 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
                 </article>
               </div>
             </section>
-          ) : null}
+          ) : null} */}
 
           <section className="catalog-panel" id="relacionados">
             <div className="catalog-header">
@@ -317,4 +287,13 @@ export function CourseDetailPage({ isLightTheme, onToggleTheme }: CourseDetailPa
       </div>
     </div>
   );
+}
+
+function renderDescriptionWithBreaks(description: string) {
+  return description.split(/\r?\n/).map((line, index, lines) => (
+    <Fragment key={`${line}-${index}`}>
+      {line}
+      {index < lines.length - 1 ? <br /> : null}
+    </Fragment>
+  ));
 }

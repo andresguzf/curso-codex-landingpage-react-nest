@@ -1,4 +1,6 @@
 :root {
+  --font-body: "Instrument Sans", sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
   --bg: #12081d;
   --bg-soft: #1b0f2c;
   --paper: #211432;
@@ -27,7 +29,7 @@ html {
 
 body {
   min-height: 100vh;
-  font-family: "Instrument Sans", sans-serif;
+  font-family: var(--font-body);
   color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(185, 132, 255, 0.18), transparent 28%),
@@ -331,9 +333,13 @@ body::before {
   margin-top: 24px;
 }
 
-.auth-main,
 .admin-main {
   min-height: calc(100vh - 240px);
+}
+
+.auth-main {
+  min-height: auto;
+  align-content: start;
 }
 
 .hero-panel,
@@ -355,8 +361,9 @@ body::before {
 .auth-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 0.92fr);
-  gap: 28px;
-  padding: 46px;
+  align-items: stretch;
+  gap: 24px;
+  padding: 34px;
   border-radius: 34px;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
@@ -373,12 +380,42 @@ body::before {
 
 .auth-card {
   display: grid;
-  gap: 20px;
-  padding: 24px;
+  gap: 18px;
+  padding: 22px;
+  align-content: start;
+}
+
+.auth-copy {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding-top: 0;
+}
+
+.auth-copy h1 {
+  margin-top: 12px;
+  max-width: 10ch;
+}
+
+.auth-copy .hero-lead,
+.auth-copy .hero-proof {
+  margin-top: 0;
+}
+
+.auth-copy .hero-proof {
+  gap: 12px;
 }
 
 .auth-card-header {
+  display: grid;
+  align-content: start;
+  gap: 10px;
   margin-bottom: 0;
+}
+
+.auth-card-header h2 {
+  margin-top: 0;
+  font-size: clamp(1.65rem, 3vw, 2.15rem);
 }
 
 .login-form {
@@ -467,7 +504,9 @@ body::before {
 
 .auth-hint strong {
   color: var(--text);
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: 1rem;
 }
 
@@ -576,7 +615,9 @@ body::before {
 }
 
 .admin-summary-card strong {
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: 2rem;
   line-height: 1;
 }
@@ -726,7 +767,9 @@ body::before {
 }
 
 .admin-swal-title {
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: #f8f1ff;
 }
 
@@ -894,9 +937,11 @@ body::before {
 
 .admin-card strong {
   display: block;
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: 1.2rem;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 .admin-card p {
@@ -953,9 +998,11 @@ body::before {
 h1,
 h2,
 h3 {
-  font-family: "Syne", sans-serif;
-  font-weight: 700;
-  line-height: 0.98;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 h1 {
@@ -1092,7 +1139,9 @@ h2 {
 .metric-block strong {
   margin-top: 0;
   font-size: 1.4rem;
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.005em;
 }
 
 .spotlight-quote {
@@ -1180,8 +1229,10 @@ h2 {
 
 .course-card h3,
 .market-card h3 {
-  font-size: 1.35rem;
-  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 1.22rem;
+  line-height: 1.2;
 }
 
 .course-description,
@@ -1302,7 +1353,9 @@ h2 {
 .market-price {
   margin-top: 0;
   font-size: 1.25rem;
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.005em;
 }
 
 .carousel-controls {
@@ -1400,9 +1453,11 @@ h2 {
 
 .trust-item strong {
   display: block;
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: 1.15rem;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .trust-item p {
@@ -1472,19 +1527,18 @@ h2 {
 }
 
 .filter-row {
+  display: grid;
+  gap: 14px;
   margin-bottom: 22px;
 }
 
 .filter-scroller {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scrollbar-width: none;
-}
-
-.filter-scroller::-webkit-scrollbar {
-  display: none;
+  max-height: 108px;
+  overflow: hidden;
+  align-items: flex-start;
 }
 
 .filter-chip {
@@ -1500,9 +1554,12 @@ h2 {
   font-size: 0.84rem;
   font-weight: 700;
   font-family: inherit;
-  white-space: nowrap;
   cursor: pointer;
   transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.filter-scroller.is-expanded {
+  max-height: none;
 }
 
 .filter-chip.active,
@@ -1511,6 +1568,28 @@ h2 {
   transform: translateY(-1px);
   background: rgba(243, 196, 107, 0.14);
   border-color: rgba(243, 196, 107, 0.26);
+}
+
+.filter-toggle {
+  justify-self: start;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted-strong);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.filter-toggle:hover,
+.filter-toggle:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .catalog-grid {
@@ -1619,7 +1698,9 @@ h2 {
 .course-detail-purchase strong {
   display: block;
   margin-top: 10px;
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: 2rem;
   line-height: 1;
 }
@@ -1658,7 +1739,9 @@ h2 {
 }
 
 .course-detail-price-card strong {
-  font-family: "Syne", sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
   font-size: clamp(2rem, 4vw, 2.8rem);
   line-height: 1;
 }
@@ -1791,17 +1874,24 @@ h2 {
 }
 
 .app-shell.theme-light .page-shell {
-  --bg: #efe5d5;
-  --bg-soft: #f4ecdf;
-  --paper: #fffaf0;
-  --paper-strong: #f7efe0;
-  --paper-warm: rgba(255, 122, 89, 0.08);
-  --line: rgba(57, 41, 26, 0.11);
-  --line-strong: rgba(57, 41, 26, 0.18);
-  --text: #221c17;
-  --muted: #6f6254;
-  --muted-strong: #45362a;
-  --shadow: 0 26px 70px rgba(123, 96, 63, 0.12);
+  --bg: #ffffff;
+  --bg-soft: #f4f8fc;
+  --paper: #ffffff;
+  --paper-strong: #f7fbff;
+  --paper-warm: rgba(98, 128, 160, 0.08);
+  --line: rgba(94, 118, 145, 0.12);
+  --line-strong: rgba(94, 118, 145, 0.2);
+  --text: #18212b;
+  --muted: #627283;
+  --muted-strong: #344454;
+  --shadow: 0 26px 70px rgba(108, 132, 160, 0.12);
+}
+
+.app-shell.theme-light .page-shell::before {
+  background:
+    radial-gradient(circle at top left, rgba(167, 192, 219, 0.16), transparent 26%),
+    radial-gradient(circle at 88% 12%, rgba(205, 221, 236, 0.14), transparent 18%),
+    linear-gradient(180deg, #ffffff 0%, var(--bg-soft) 52%, #f9fbfd 100%);
 }
 
 .app-shell.theme-light .page-shell .site-header,
@@ -1817,9 +1907,10 @@ h2 {
 .app-shell.theme-light .page-shell .market-card,
 .app-shell.theme-light .page-shell .course-card,
 .app-shell.theme-light .page-shell .filter-chip,
+.app-shell.theme-light .page-shell .filter-toggle,
 .app-shell.theme-light .page-shell .catalog-search,
 .app-shell.theme-light .page-shell .social-links a {
-  background: rgba(255, 251, 244, 0.84);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .app-shell.theme-light .page-shell .auth-panel,
@@ -1828,7 +1919,7 @@ h2 {
 .app-shell.theme-light .page-shell .auth-hint,
 .app-shell.theme-light .page-shell .field input,
 .app-shell.theme-light .page-shell .admin-summary-card {
-  background: rgba(255, 251, 244, 0.84);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .app-shell.theme-light .page-shell .admin-table-shell,
@@ -1836,7 +1927,7 @@ h2 {
 .app-shell.theme-light .page-shell .admin-table tbody tr:hover,
 .app-shell.theme-light .page-shell .admin-modal,
 .app-shell.theme-light .page-shell .admin-textarea {
-  background: rgba(34, 28, 23, 0.03);
+  background: rgba(58, 83, 110, 0.04);
 }
 
 .app-shell.theme-light .page-shell .admin-toolbar-copy p,
@@ -1846,57 +1937,72 @@ h2 {
 .app-shell.theme-light .page-shell .admin-muted,
 .app-shell.theme-light .page-shell .admin-modal-header p,
 .app-shell.theme-light .page-shell .admin-card p {
-  color: #5f5346;
+  color: #667789;
 }
 
 .app-shell.theme-light .page-shell .admin-table-shell {
-  background: rgba(255, 252, 247, 0.94);
-  border-color: rgba(57, 41, 26, 0.14);
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(94, 118, 145, 0.14);
 }
 
 .app-shell.theme-light .page-shell .admin-table th {
-  color: #6a5a4b;
-  background: rgba(87, 68, 45, 0.06);
+  color: #627283;
+  background: rgba(94, 118, 145, 0.06);
 }
 
 .app-shell.theme-light .page-shell .admin-table td,
 .app-shell.theme-light .page-shell .admin-table-id,
-.app-shell.theme-light .page-shell .admin-course-cell strong,
 .app-shell.theme-light .page-shell .admin-action-button,
 .app-shell.theme-light .page-shell .admin-modal-close,
 .app-shell.theme-light .page-shell .admin-alert p {
-  color: #2f241b;
+  color: #1f2c38;
+}
+
+.app-shell.theme-light .page-shell .admin-course-cell strong {
+  color: #4b647d;
 }
 
 .app-shell.theme-light .page-shell .admin-table tbody tr {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.78);
 }
 
 .app-shell.theme-light .page-shell .admin-table tbody tr:hover {
-  background: rgba(111, 75, 255, 0.08);
+  background: rgba(111, 140, 176, 0.08);
 }
 
 .app-shell.theme-light .page-shell .admin-tag {
-  background: rgba(111, 75, 255, 0.1);
-  border-color: rgba(111, 75, 255, 0.2);
-  color: #5b3dbf;
+  background: rgba(110, 132, 176, 0.1);
+  border-color: rgba(110, 132, 176, 0.22);
+  color: #49658a;
+}
+
+.app-shell.theme-light .page-shell .course-tag {
+  background: rgba(120, 145, 176, 0.14);
+  border: 1px solid rgba(120, 145, 176, 0.28);
+  color: #46627f;
+}
+
+.app-shell.theme-light .page-shell .course-bestseller-badge {
+  background: rgba(215, 228, 241, 0.86);
+  border-color: rgba(120, 145, 176, 0.24);
+  color: #39526c;
 }
 
 .app-shell.theme-light .page-shell .admin-status-badge {
-  background: rgba(57, 41, 26, 0.06);
-  border-color: rgba(57, 41, 26, 0.14);
-  color: #4a3a2b;
+  background: rgba(94, 118, 145, 0.06);
+  border-color: rgba(94, 118, 145, 0.14);
+  color: #415363;
 }
 
 .app-shell.theme-light .page-shell .admin-status-badge.is-highlighted {
-  background: rgba(243, 196, 107, 0.18);
-  border-color: rgba(197, 140, 33, 0.25);
-  color: #8b5a00;
+  background: rgba(214, 227, 240, 0.7);
+  border-color: rgba(133, 158, 186, 0.28);
+  color: #47627f;
 }
 
 .app-shell.theme-light .page-shell .admin-action-button {
-  background: rgba(255, 255, 255, 0.86);
-  border-color: rgba(57, 41, 26, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(94, 118, 145, 0.14);
 }
 
 .app-shell.theme-light .page-shell .admin-action-button.is-danger {
@@ -1906,7 +2012,7 @@ h2 {
 }
 
 .app-shell.theme-light .page-shell .admin-alert {
-  background: rgba(255, 251, 244, 0.96);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .app-shell.theme-light .page-shell .admin-alert-success {
@@ -1920,50 +2026,80 @@ h2 {
 }
 
 .app-shell.theme-light .page-shell .admin-alert-close {
-  background: rgba(57, 41, 26, 0.05);
-  border-color: rgba(57, 41, 26, 0.12);
-  color: #2f241b;
+  background: rgba(94, 118, 145, 0.05);
+  border-color: rgba(94, 118, 145, 0.12);
+  color: #1f2c38;
 }
 
 .app-shell.theme-light .page-shell .admin-modal {
-  background: rgba(255, 251, 244, 0.98);
+  background: rgba(255, 255, 255, 0.98);
 }
 
 .app-shell.theme-light .page-shell .admin-modal-header {
-  border-bottom-color: rgba(57, 41, 26, 0.12);
+  border-bottom-color: rgba(94, 118, 145, 0.12);
 }
 
 .app-shell.theme-light .page-shell .admin-textarea,
 .app-shell.theme-light .page-shell .field input {
-  color: #2f241b;
+  color: #1f2c38;
 }
 
 .app-shell.theme-light .page-shell .metric-block,
 .app-shell.theme-light .page-shell .arrow,
 .app-shell.theme-light .page-shell .dots {
-  background: rgba(34, 28, 23, 0.06);
+  background: rgba(88, 114, 142, 0.08);
+}
+
+.app-shell.theme-light .page-shell .nav-cta,
+.app-shell.theme-light .page-shell .primary-button,
+.app-shell.theme-light .page-shell .admin-swal-confirm {
+  color: #f7fbff;
+  background: linear-gradient(135deg, #7e98b4, #5f7895);
+}
+
+.app-shell.theme-light .page-shell .nav-cta:hover,
+.app-shell.theme-light .page-shell .nav-cta:focus-visible,
+.app-shell.theme-light .page-shell .primary-button:hover,
+.app-shell.theme-light .page-shell .primary-button:focus-visible,
+.app-shell.theme-light .page-shell .admin-swal-confirm:hover,
+.app-shell.theme-light .page-shell .admin-swal-confirm:focus-visible {
+  background: linear-gradient(135deg, #7591ae, #566f8d);
 }
 
 .app-shell.theme-light .page-shell .secondary-button,
 .app-shell.theme-light .page-shell .course-link {
-  background: rgba(34, 28, 23, 0.03);
+  color: #58718e;
+  border-color: rgba(94, 118, 145, 0.18);
+  background: rgba(88, 114, 142, 0.04);
+}
+
+.app-shell.theme-light .page-shell .meta-stack::before {
+  background: linear-gradient(135deg, #f3c6a0, #e8a974);
+}
+
+.app-shell.theme-light .page-shell .stars::before {
+  color: rgba(196, 154, 118, 0.26);
+}
+
+.app-shell.theme-light .page-shell .stars::after {
+  color: #e6ae7f;
 }
 
 .app-shell.theme-light .page-shell .course-detail-price-card {
   background:
-    linear-gradient(135deg, rgba(136, 91, 255, 0.14), rgba(255, 255, 255, 0.6)),
-    rgba(255, 255, 255, 0.84);
+    linear-gradient(135deg, rgba(176, 198, 222, 0.2), rgba(255, 255, 255, 0.72)),
+    rgba(255, 255, 255, 0.92);
 }
 
 .app-shell.theme-light .page-shell .course-detail-purchase,
 .app-shell.theme-light .page-shell .course-detail-spec-row {
-  background: rgba(255, 251, 244, 0.84);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .app-shell.theme-light .page-shell .spotlight-card {
   background:
-    linear-gradient(135deg, rgba(136, 91, 255, 0.16), rgba(255, 255, 255, 0.65)),
-    rgba(255, 255, 255, 0.84);
+    linear-gradient(135deg, rgba(179, 202, 226, 0.18), rgba(255, 255, 255, 0.72)),
+    rgba(255, 255, 255, 0.9);
 }
 
 .app-shell.theme-light .page-shell h1,
@@ -1971,8 +2107,10 @@ h2 {
 .app-shell.theme-light .page-shell h3,
 .app-shell.theme-light .page-shell .proof-card strong,
 .app-shell.theme-light .page-shell .metric-block strong,
+.app-shell.theme-light .page-shell .course-detail-price-card strong,
+.app-shell.theme-light .page-shell .course-detail-purchase strong,
 .app-shell.theme-light .page-shell .market-price {
-  color: #5f4f7e;
+  color: #42586f;
 }
 
 .app-shell.theme-light .page-shell .course-card h3,
@@ -1981,7 +2119,7 @@ h2 {
 .app-shell.theme-light .page-shell .section-copy h2,
 .app-shell.theme-light .page-shell .manifesto-card h2,
 .app-shell.theme-light .page-shell .trust-item strong {
-  color: #6a5a89;
+  color: #4b647d;
 }
 
 @media (max-width: 1080px) {

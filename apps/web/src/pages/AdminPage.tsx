@@ -152,11 +152,11 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
           <section className="hero-panel admin-hero">
             <div className="hero-copy">
               <span className="eyebrow">Dashboard admin</span>
-              <h1>Un espacio privado separado del landing publico.</h1>
+              {/* <h1>Un espacio privado separado del landing publico.</h1>
               <p className="hero-lead">
                 El acceso queda protegido por JWT y no aparece dentro del menu del sitio principal. Por ahora el tablero
                 esta reservado para la siguiente etapa.
-              </p>
+              </p> */}
 
               <div className="hero-proof">
                 <article className="proof-card">
@@ -165,21 +165,21 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
                 </article>
                 <article className="proof-card">
                   <span>Estado</span>
-                  <strong>Por ahora en construccion</strong>
+                  <strong>En producción con Supabase</strong>
                 </article>
               </div>
             </div>
 
-            <div className="latest-panel admin-panel">
-              <div className="latest-panel-header">
+            {/* <div className="latest-panel admin-panel"> */}
+              {/* <div className="latest-panel-header">
                 <div>
                   <span className="eyebrow">Backoffice</span>
                   <h2>Dashboard en construccion</h2>
                 </div>
                 <p>La pagina ya esta protegida y ahora expone la primera vista de gestion del catalogo.</p>
-              </div>
+              </div> */}
 
-              <div className="admin-grid">
+              {/* <div className="admin-grid">
                 <article className="manifesto-card admin-card">
                   <strong>Catalogo</strong>
                   <p>Alta, edicion y baja de cursos con formularios conectados al backend.</p>
@@ -192,8 +192,8 @@ export function AdminPage({ isLightTheme, onToggleTheme }: AdminPageProps) {
                   <strong>Metricas</strong>
                   <p>Visibilidad de cursos destacados, ventas y rendimiento del contenido.</p>
                 </article>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </section>
 
           <AdminCoursesTable

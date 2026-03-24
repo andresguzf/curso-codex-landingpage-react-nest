@@ -191,11 +191,11 @@ export class CoursesService {
 }
 
 function buildCourseWhere(filters: Pick<CoursesQueryDto, 'query' | 'tag'>) {
-  const normalizedQuery = filters.query?.trim().toLowerCase();
+  const normalizedQuery = filters.query?.trim();
   const normalizedTag = filters.tag?.trim().toLowerCase();
 
   return {
-    ...(normalizedQuery ? { title: { contains: normalizedQuery } } : {}),
+    ...(normalizedQuery ? { title: { contains: normalizedQuery, mode: 'insensitive' as const } } : {}),
     ...(normalizedTag ? { tagsJson: { contains: `"${normalizedTag}"` } } : {}),
   };
 }

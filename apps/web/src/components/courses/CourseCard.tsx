@@ -28,7 +28,7 @@ export function CourseCard({ course, variant }: CourseCardProps) {
           {course.best_sellers ? <span className="course-bestseller-badge">Best seller</span> : null}
         </div>
         <h3>{course.title}</h3>
-        <p className={isLatest ? 'course-description' : 'market-description'}>{course.description}</p>
+        {/* <p className={isLatest ? 'course-description' : 'market-description'}>{course.description}</p> */}
         <div className={isLatest ? 'course-meta' : 'market-meta'}>
           <span className="meta-stack">
             {clockIcon}

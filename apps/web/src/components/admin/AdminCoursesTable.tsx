@@ -45,12 +45,7 @@ export function AdminCoursesTable({
         onSearchQueryChange={onSearchQueryChange}
       />
 
-      <div className="catalog-header admin-table-header">
-        <div className="section-copy">
-          <h2 className="catalog-title">Tabla de administracion conectada al backend.</h2>
-          <p>Vista inicial para revisar el catalogo publicado. Por ahora solo lectura, pensada como base para el CRUD administrativo.</p>
-        </div>
-      </div>
+
 
       {error ? <p className="catalog-empty">{error}</p> : null}
       {deleteError ? <p className="catalog-empty">{deleteError}</p> : null}
@@ -75,7 +70,7 @@ export function AdminCoursesTable({
             <tbody>
               {courses.map((course) => (
                 <tr key={course.id}>
-                  <td className="admin-table-id">#{course.id}</td>
+                  <td className="admin-table-id">{course.id}</td>
                   <td>
                     <div className="admin-course-cell">
                       <strong>{course.title}</strong>

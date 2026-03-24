@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="site-footer" id="contacto">
       <div className="footer-copy">
         <span className="eyebrow">Contacto</span>
-        <p>CodeCinema Academy © 2026. Cursos online de desarrollo, arquitectura y sistemas distribuidos.</p>
+        <p>Dev Academy © 2026. Cursos online de desarrollo, arquitectura y sistemas distribuidos.</p>
         <a className="footer-email" href="mailto:contacto@andresguzman.dev">
           contacto@andresguzman.dev
         </a>

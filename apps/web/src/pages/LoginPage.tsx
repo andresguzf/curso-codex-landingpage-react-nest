@@ -34,7 +34,7 @@ export function LoginPage({ isLightTheme, onToggleTheme }: LoginPageProps) {
           <section className="auth-panel">
             <div className="auth-copy">
               <span className="eyebrow">Acceso privado</span>
-              <h1>Ingresa al panel admin con la misma estetica del landing.</h1>
+              <h1>Ingresa al panel admin.</h1>
               <p className="hero-lead">
                 Un acceso simple para administrar la plataforma sin mezclarlo con la navegacion publica. El dashboard queda
                 fuera del menu principal y mantiene la misma atmosfera visual.
@@ -58,7 +58,7 @@ export function LoginPage({ isLightTheme, onToggleTheme }: LoginPageProps) {
                   <span className="eyebrow">Login</span>
                   <h2>Panel administrativo</h2>
                 </div>
-                <p>Usa el usuario seed del backend para validar el flujo.</p>
+                {/* <p>Usa el usuario seed del backend para validar el flujo.</p> */}
               </div>
 
               <form className="login-form" onSubmit={handleSubmit}>
@@ -84,10 +84,10 @@ export function LoginPage({ isLightTheme, onToggleTheme }: LoginPageProps) {
                 </button>
               </form>
 
-              <div className="auth-hint">
+              {/* <div className="auth-hint">
                 <strong>Demo backend</strong>
                 <p>`admin@example.com` con la contrasena seed del proyecto.</p>
-              </div>
+              </div> */}
             </div>
           </section>
         </main>

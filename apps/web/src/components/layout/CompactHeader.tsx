@@ -29,7 +29,7 @@ export function CompactHeader({ isLightTheme, onToggleTheme, action }: CompactHe
           </span>
           <span className="brand-copy">
             <strong>Andres Guzman</strong>
-            <span>CodeCinema Academy</span>
+            <span>Dev Academy</span>
           </span>
         </Link>
 

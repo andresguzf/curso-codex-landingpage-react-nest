@@ -3,6 +3,8 @@ import { useCoursesStore } from '../app/store/useCoursesStore';
 import { fetchCourses, fetchCourseTags, fetchCoursesCount, fetchLatestCourses } from '../lib/api';
 import { getResultsCopy } from '../lib/course-utils';
 
+const tagCollator = new Intl.Collator('es', { sensitivity: 'base' });
+
 export function useCourses() {
   const courses = useCoursesStore((state) => state.courses);
   const latestCourses = useCoursesStore((state) => state.latestCourses);
@@ -119,7 +121,8 @@ export function useCourses() {
           return;
         }
 
-        setTags(['all', ...apiTags]);
+        const sortedTags = [...apiTags].sort((firstTag, secondTag) => tagCollator.compare(firstTag, secondTag));
+        setTags(['all', ...sortedTags]);
       } catch (loadError) {
         if (!isMounted) {
           return;

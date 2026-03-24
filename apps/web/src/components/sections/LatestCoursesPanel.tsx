@@ -18,7 +18,7 @@ export function LatestCoursesPanel({ courses, currentSlide, onChangeSlide, isLoa
             <span className="eyebrow">Lanzamientos</span>
             <h2>Ultimos cursos</h2>
           </div>
-          <p>Seleccion curada para quienes quieren avanzar rapido en stacks de alto impacto.</p>
+          {/* <p>Seleccion curada para quienes quieren avanzar rapido en stacks de alto impacto.</p> */}
         </div>
         {error ? <p className="catalog-empty">{error}</p> : null}
         {isLoading ? <p className="catalog-empty">Cargando ultimos cursos...</p> : null}
